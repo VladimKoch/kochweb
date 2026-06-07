@@ -1,0 +1,309 @@
+* ── MACHINE CANVAS AREA ─────────────────────── */
+    .machine-wrap {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 560px;
+      height: 480px;
+      z-index: 5;
+    }
+    #machineCanvas {
+      width: 100%; height: 100%;
+    }
+
+    
+
+
+
+    <!-- Machine Canvas -->
+  <div class="machine-wrap">
+    <canvas id="machineCanvas"></canvas>
+  </div>
+
+  <div class="scroll-hint">
+    Scroll to discover
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+
+
+  /* ──────────────────────────────────────────────────
+   MACHINE CANVAS — animated automation machine
+────────────────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('machineCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = 560;
+  canvas.height = 480;
+
+  let t = 0;
+  let scrollProgress = 0;
+
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress = window.scrollY / Math.max(max, 1);
+  });
+
+  function drawGear(ctx, x, y, outerR, innerR, teeth, angle, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    const step = (Math.PI * 2) / teeth;
+    ctx.beginPath();
+    for (let i = 0; i < teeth; i++) {
+      const a1 = i * step - step * 0.3;
+      const a2 = i * step + step * 0.3;
+      const a3 = i * step + step * 0.5;
+      const a4 = (i + 1) * step - step * 0.5;
+      ctx.lineTo(Math.cos(a1) * innerR, Math.sin(a1) * innerR);
+      ctx.lineTo(Math.cos(a1) * outerR, Math.sin(a1) * outerR);
+      ctx.lineTo(Math.cos(a2) * outerR, Math.sin(a2) * outerR);
+      ctx.lineTo(Math.cos(a2) * innerR, Math.sin(a2) * innerR);
+      ctx.lineTo(Math.cos(a3) * innerR, Math.sin(a3) * innerR);
+      ctx.lineTo(Math.cos(a4) * innerR, Math.sin(a4) * innerR);
+    }
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // center circle
+    ctx.beginPath();
+    ctx.arc(0, 0, innerR * 0.35, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGlowCircle(ctx, x, y, r, color, alpha) {
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+    grad.addColorStop(0, color.replace(')', `,${alpha})`).replace('rgb', 'rgba'));
+    grad.addColorStop(1, color.replace(')', ',0)').replace('rgb', 'rgba'));
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  function drawDataCube(ctx, x, y, size, glowColor) {
+    ctx.save();
+    ctx.translate(x, y);
+    // top face
+    ctx.beginPath();
+    ctx.moveTo(0, -size * 0.5);
+    ctx.lineTo(size * 0.6, -size * 0.1);
+    ctx.lineTo(0, size * 0.3);
+    ctx.lineTo(-size * 0.6, -size * 0.1);
+    ctx.closePath();
+    ctx.fillStyle = glowColor;
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    // right face
+    ctx.beginPath();
+    ctx.moveTo(size * 0.6, -size * 0.1);
+    ctx.lineTo(size * 0.6, size * 0.35);
+    ctx.lineTo(0, size * 0.75);
+    ctx.lineTo(0, size * 0.3);
+    ctx.closePath();
+    ctx.fillStyle = glowColor;
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    // left face
+    ctx.beginPath();
+    ctx.moveTo(-size * 0.6, -size * 0.1);
+    ctx.lineTo(-size * 0.6, size * 0.35);
+    ctx.lineTo(0, size * 0.75);
+    ctx.lineTo(0, size * 0.3);
+    ctx.closePath();
+    ctx.fillStyle = glowColor;
+    ctx.globalAlpha = 0.3;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  let cubes = [
+    { p: 0.0, speed: 0.002, label: 'Lead' },
+    { p: 0.35, speed: 0.002, label: 'Nabídka' },
+    { p: 0.7, speed: 0.002, label: 'Deal' },
+  ];
+
+  const conveyorPath = [
+    {x: 60, y: 340}, {x: 160, y: 310}, {x: 260, y: 240},
+    {x: 350, y: 200}, {x: 440, y: 250}, {x: 490, y: 340}
+  ];
+
+  function getPathPoint(progress, path) {
+    const total = path.length - 1;
+    const scaled = progress * total;
+    const idx = Math.min(Math.floor(scaled), total - 1);
+    const t = scaled - idx;
+    return {
+      x: lerp(path[idx].x, path[idx+1].x, t),
+      y: lerp(path[idx].y, path[idx+1].y, t)
+    };
+  }
+
+  function drawConveyorBelt(ctx, path, t) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(path[0].x, path[0].y);
+    for (let i = 1; i < path.length; i++) {
+      ctx.lineTo(path[i].x, path[i].y);
+    }
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 18;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    // animated dashes
+    ctx.setLineDash([10, 14]);
+    ctx.lineDashOffset = -t * 30;
+    ctx.strokeStyle = 'rgba(96,165,250,0.3)';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  function draw() {
+    const speed = 0.8 + scrollProgress * 2;
+    t += 0.016 * speed;
+
+    ctx.clearRect(0, 0, 560, 480);
+
+    // BG glow
+    drawGlowCircle(ctx, 280, 240, 200, 'rgb(59,130,246)', 0.08);
+    drawGlowCircle(ctx, 380, 180, 120, 'rgb(168,85,247)', 0.07);
+
+    // Conveyor belt
+    drawConveyorBelt(ctx, conveyorPath, t);
+
+    // Labels
+    ctx.save();
+    ctx.font = '600 9px Inter';
+    ctx.fillStyle = 'rgba(96,165,250,0.7)';
+    ctx.fillText('LEAD INPUT', 35, 360);
+    ctx.fillStyle = 'rgba(192,132,252,0.7)';
+    ctx.fillText('SIGNED DEAL', 450, 360);
+    ctx.restore();
+
+    // Gears
+    drawGear(ctx, 160, 295, 36, 26, 10, t * 1.2, 'rgba(59,130,246,0.55)');
+    drawGear(ctx, 260, 225, 44, 32, 12, -t * 0.9, 'rgba(168,85,247,0.55)');
+    drawGear(ctx, 350, 190, 30, 22, 8, t * 1.5, 'rgba(59,130,246,0.45)');
+    drawGear(ctx, 440, 240, 38, 28, 10, -t * 1.1, 'rgba(168,85,247,0.5)');
+
+    // AI Core — center glowing circle
+    const coreX = 275, coreY = 195;
+    drawGlowCircle(ctx, coreX, coreY, 55, 'rgb(96,165,250)', 0.25);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(coreX, coreY, 36, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(15,15,35,0.85)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(96,165,250,0.6)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // AI core nodes
+    for (let i = 0; i < 6; i++) {
+      const a = t * 0.5 + (i / 6) * Math.PI * 2;
+      const nx = coreX + Math.cos(a) * 22;
+      const ny = coreY + Math.sin(a) * 22;
+      const pulse = Math.sin(t * 2 + i) * 0.5 + 0.5;
+      ctx.beginPath();
+      ctx.arc(nx, ny, 3 + pulse * 2, 0, Math.PI * 2);
+      ctx.fillStyle = i % 2 === 0 ? '#60a5fa' : '#c084fc';
+      ctx.globalAlpha = 0.7 + pulse * 0.3;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    // center dot
+    const cp = Math.sin(t * 3) * 0.5 + 0.5;
+    ctx.beginPath();
+    ctx.arc(coreX, coreY, 6 + cp * 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#60a5fa';
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    // label
+    ctx.font = '700 7.5px Space Grotesk';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.textAlign = 'center';
+    ctx.fillText('KochTech', coreX, coreY + 1);
+    ctx.font = '600 6px Inter';
+    ctx.fillStyle = 'rgba(96,165,250,0.8)';
+    ctx.fillText('AI CORE', coreX, coreY + 10);
+    ctx.textAlign = 'left';
+    ctx.restore();
+
+    // Moving data cubes on conveyor
+    cubes.forEach((cube, i) => {
+      cube.p += cube.speed * speed;
+      if (cube.p > 1) cube.p = 0;
+      const pos = getPathPoint(cube.p, conveyorPath);
+      const progress = cube.p;
+      let color;
+      if (progress < 0.33) color = '#60a5fa';
+      else if (progress < 0.66) color = '#c084fc';
+      else color = '#4ade80';
+
+      drawGlowCircle(ctx, pos.x, pos.y, 18, color.replace('#', 'rgb(').replace('60a5fa', '96,165,250').replace('c084fc', '192,132,252').replace('4ade80', '74,222,128'), 0.4);
+      drawDataCube(ctx, pos.x, pos.y - 8, 14, color);
+
+      ctx.save();
+      ctx.font = '600 7px Inter';
+      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.textAlign = 'center';
+      ctx.fillText(cube.label, pos.x, pos.y + 16);
+      ctx.textAlign = 'left';
+      ctx.restore();
+    });
+
+    // Glass panel — floating info card
+    ctx.save();
+    const px = 60, py = 50, pw = 160, ph = 75;
+    ctx.beginPath();
+    ctx.roundRect(px, py, pw, ph, 12);
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.font = '700 8px Space Grotesk';
+    ctx.fillStyle = 'rgba(96,165,250,0.9)';
+    ctx.fillText('AUTOMATION STATUS', px + 12, py + 18);
+    ctx.font = '600 7px Inter';
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillText('● Leads processed: ' + Math.floor(t * 3 * speed % 100 + 850), px + 12, py + 33);
+    ctx.fillText('● Proposals sent: ' + Math.floor(t * 2 * speed % 50 + 340), px + 12, py + 46);
+    ctx.fillText('● Deals closed: ' + Math.floor(t * 1.2 * speed % 20 + 120), px + 12, py + 59);
+    ctx.restore();
+
+    // Second glass panel
+    ctx.save();
+    const p2x = 360, p2y = 50, p2w = 155, p2h = 60;
+    ctx.beginPath();
+    ctx.roundRect(p2x, p2y, p2w, p2h, 12);
+    ctx.fillStyle = 'rgba(168,85,247,0.07)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(168,85,247,0.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.font = '700 8px Space Grotesk';
+    ctx.fillStyle = 'rgba(192,132,252,0.9)';
+    ctx.fillText('AI EFFICIENCY', p2x + 12, p2y + 18);
+    const eff = 94 + Math.sin(t * 0.5) * 3;
+    ctx.font = '800 18px Space Grotesk';
+    ctx.fillStyle = '#c084fc';
+    ctx.fillText(eff.toFixed(1) + '%', p2x + 12, p2y + 45);
+    ctx.restore();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
