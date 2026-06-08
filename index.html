@@ -1181,10 +1181,10 @@
 <nav id="mainNav">
   <div class="nav-logo">Koch<span>Tech</span></div>
   <ul class="nav-links">
-    <li><a href="#">Jak to funguje</a></li>
-    <li><a href="#">Služby</a></li>
-    <li><a href="#">Reference</a></li>
-    <li><a href="#" class="nav-cta">Kontakt</a></li>
+    <li><a href="#jak">Jak to funguje</a></li>
+    <li><a href="#sluzby">Služby</a></li>
+    <!-- <li><a href="#">Reference</a></li> -->
+    <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
   </ul>
 </nav>
 
@@ -1214,12 +1214,12 @@
 
     <div class="hero-cta-group">
       <div class="magnetic">
-        <a href="#" class="btn-primary">
+        <a href="#konzultace" class="btn-primary">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Zdarma konzultace
         </a>
       </div>
-      <a href="#" class="btn-secondary">
+      <a href="#jak" class="btn-secondary">
           <span class="play-icon">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16 10 8"/></svg>
             </span>
@@ -1296,7 +1296,7 @@
   </div>
 </div>
 
-<section class="how-section" id="jak-to-funguje">
+<section id="jak" class="how-section" id="jak-to-funguje">
   <div class="reveal-left">
     <div class="section-label">Jak to funguje</div>
     <h2 class="section-title">Tři kroky k<br><span style="background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">automatizovanému růstu</span></h2>
@@ -1479,7 +1479,7 @@
   </div>
 </section> -->
 
-<section class="cta-section">
+<section id="konzultace" class="cta-section">
   <div class="cta-gradient"></div>
   <div class="reveal">
     <div class="section-label" style="display:block;text-align:center;margin-bottom:20px;">Začněte dnes</div>
@@ -1489,17 +1489,20 @@
   <div class="cta-form reveal" style="transition-delay: 0.2s">
     <input class="cta-input" type="email" placeholder="vas@email.cz" />
     <div class="magnetic">
-      <a href="#" class="btn-primary">Chci konzultaci zdarma →</a>
+      <a href="https://api.leadconnectorhq.com/widget/booking/lcovmTWC7gpJz4WLal2h" class="btn-primary">Chci konzultaci zdarma →</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">Koch<span>Tech</span></div>
-  <p>© 2026 KochTech. Všechna práva vyhrazena.</p>
+  <div id="kontakt" class="footer-logo">Koch<span>Tech</span></div>
+  <div style="text-align: center;">
+    <p style="margin-bottom: 4px;">Vladimír Kochan | IČO: 00785679 | Tel.: 730 553 971</p>
+    <p>© 2026 KochTech. Všechna práva vyhrazena.</p>
+  </div>
   <div style="display:flex;gap:24px;">
-    <a href="#">Podmínky</a>
-    <a href="#">Ochrana dat</a>
+    <a href="podminky.html">Podmínky</a>
+    <a href="gdpr.html">Ochrana dat</a>
   </div>
 </footer>
 

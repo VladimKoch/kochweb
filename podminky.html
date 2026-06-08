@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obchodní podmínky | KochTech</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-glow: #60a5fa;
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --bg: #f8f9fc;
+      --bg-white: #ffffff;
+      --glass-bg: rgba(255,255,255,0.7);
+      --glass-border: rgba(0,0,0,0.06);
+      --text-primary: #1a1a2e;
+      --text-secondary: rgba(26,26,46,0.55);
+      --text-muted: rgba(26,26,46,0.35);
+      --border-light: rgba(0,0,0,0.06);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── CUSTOM CURSOR ─────────────────────────── */
+    .cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--blue);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: normal;
+      transition: transform 0.15s var(--ease-out-expo);
+      will-change: transform;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: width 0.4s var(--ease-out-expo), height 0.4s var(--ease-out-expo), border-color 0.3s;
+      will-change: transform;
+    }
+    .cursor-ring.hovering {
+      width: 56px; height: 56px;
+      border-color: rgba(37,99,235,0.5);
+    }
+
+    /* ── GRAIN OVERLAY ─────────────────────────── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    /* ── LOADER ─────────────────────────────────── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+      transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+    }
+    .loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--text-primary);
+      opacity: 0;
+      transform: translateY(12px);
+      animation: loaderFadeIn 0.6s 0.2s var(--ease-out-expo) forwards;
+    }
+    .loader-logo span { color: var(--blue); }
+    .loader-bar-track {
+      width: 160px; height: 2px;
+      background: var(--border-light);
+      border-radius: 2px;
+      overflow: hidden;
+      opacity: 0;
+      animation: loaderFadeIn 0.6s 0.4s var(--ease-out-expo) forwards;
+    }
+    .loader-bar {
+      width: 0%; height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      border-radius: 2px;
+      animation: loaderProgress 1.4s 0.5s var(--ease-out-expo) forwards;
+    }
+    @keyframes loaderFadeIn { to { opacity: 1; transform: translateY(0); } }
+    @keyframes loaderProgress { to { width: 100%; } }
+
+    /* ── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      background: transparent;
+      transition: background 0.5s var(--ease-out-quart),
+                  backdrop-filter 0.5s var(--ease-out-quart),
+                  box-shadow 0.5s;
+    }
+    nav.scrolled {
+      background: rgba(248,249,252,0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--blue); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 400;
+      transition: color 0.3s;
+      position: relative;
+      padding: 4px 0;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--blue);
+      transition: width 0.4s var(--ease-out-expo);
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      padding: 8px 20px !important;
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(37,99,235,0.15);
+      border-radius: 6px;
+      color: var(--blue) !important;
+      font-weight: 500 !important;
+      transition: background 0.3s, border-color 0.3s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      background: rgba(37,99,235,0.14) !important;
+      border-color: rgba(37,99,235,0.3) !important;
+    }
+
+    /* ── HERO HEADER ───────────────────────────── */
+    .hero-header {
+      position: relative;
+      padding: 160px 80px 100px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .hero-gradient .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0;
+      animation: orbFadeIn 2s var(--ease-out-expo) forwards;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+      top: -20%; left: 10%;
+      animation-delay: 0.3s !important;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%);
+      top: -10%; right: 15%;
+      animation-delay: 0.6s !important;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+      bottom: 0; left: 40%;
+      animation-delay: 0.9s !important;
+    }
+    @keyframes orbFadeIn { to { opacity: 1; } }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, black 0%, transparent 100%);
+    }
+
+    .hero-header-content {
+      position: relative;
+      z-index: 10;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-header-content .hero-badge {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37,99,235,0.06);
+      border: 1px solid rgba(37,99,235,0.12);
+      border-radius: 999px;
+      padding: 7px 18px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 28px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s 1.8s var(--ease-out-expo) forwards;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulseDot 2.5s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.9s 2s var(--ease-out-expo) forwards;
+    }
+    .hero-header h1 .accent {
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-header-sub {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.9s 2.2s var(--ease-out-expo) forwards;
+    }
+    .hero-header-sub strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── CONTENT AREA ──────────────────────────── */
+    .content-area {
+      padding: 0 80px 100px;
+      position: relative;
+      z-index: 10;
+    }
+    .content-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      /* Offset to visually center content accounting for sidebar */
+      padding-left: 0;
+    }
+
+    /* ── PROVIDER INFO CARD ────────────────────── */
+    .provider-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+    }
+    .provider-card.visible { opacity: 1; transform: translateY(0); }
+    .provider-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .provider-icon svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.5; }
+    .provider-info h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .provider-info p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .provider-info span {
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    /* ── SECTION CARDS ─────────────────────────── */
+    .terms-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 36px 32px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s var(--ease-out-expo);
+      cursor: default;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .terms-card.visible { opacity: 1; transform: translateY(0); }
+    .terms-card:hover {
+      border-color: rgba(37,99,235,0.15);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .terms-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--blue), var(--purple));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .terms-card:hover::before { opacity: 1; }
+
+    .tc-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tc-number {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .tc-number.blue { background: rgba(37,99,235,0.08); color: var(--blue); }
+    .tc-number.purple { background: rgba(124,58,237,0.08); color: var(--purple); }
+    .tc-number.teal { background: rgba(20,184,166,0.08); color: #14b8a6; }
+    .tc-number.amber { background: rgba(245,158,11,0.08); color: #f59e0b; }
+    .tc-number.rose { background: rgba(244,63,94,0.08); color: #f43f5e; }
+    .tc-number.indigo { background: rgba(99,102,241,0.08); color: #6366f1; }
+
+    .tc-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tc-body p {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    .tc-body p + p { margin-top: 12px; }
+    .tc-body strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ── INFO BOX ──────────────────────────────── */
+    .info-box {
+      background: rgba(37,99,235,0.04);
+      border: 1px solid rgba(37,99,235,0.1);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .info-box svg {
+      width: 18px; height: 18px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .info-box p {
+      font-size: 0.82rem !important;
+      color: var(--blue) !important;
+      line-height: 1.6 !important;
+    }
+
+    /* ── KEY POINTS LIST ───────────────────────── */
+    .key-points {
+      list-style: none;
+      margin-top: 16px;
+    }
+    .key-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .key-points li:last-child { border-bottom: none; }
+    .key-points li .kp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    /* ── BACK BUTTON ───────────────────────────── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 10px 20px;
+      background: rgba(37,99,235,0.06);
+      border: 1px solid rgba(37,99,235,0.12);
+      border-radius: 8px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s var(--ease-out-expo);
+      margin-bottom: 40px;
+    }
+    .back-btn:hover {
+      background: rgba(37,99,235,0.12);
+      border-color: rgba(37,99,235,0.25);
+      transform: translateX(-4px);
+    }
+    .back-btn svg {
+      width: 16px; height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* ── EFFECTIVE DATE FOOTER ─────────────────── */
+    .effective-date {
+      text-align: center;
+      padding: 40px 80px 20px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer {
+      padding: 32px 80px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .footer-logo span { color: var(--blue); }
+    footer p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    footer .footer-links { display: flex; gap: 24px; }
+    footer a {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    footer a:hover { color: var(--text-primary); }
+
+    /* ── STICKY SIDEBAR NAV ────────────────────── */
+    .content-area {
+      position: relative;
+      padding: 0 80px 100px;
+      padding-left: 80px;
+    }
+    .content-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .sidebar-nav {
+      position: fixed;
+      top: 50%;
+      left: 28px;
+      transform: translateY(-50%);
+      width: 200px;
+      z-index: 100;
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 20px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    }
+    .sidebar-nav-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      padding-left: 16px;
+    }
+    .sidebar-nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      transition: background 0.3s, color 0.3s, transform 0.3s var(--ease-out-expo);
+      position: relative;
+    }
+    .sidebar-nav a:hover {
+      background: rgba(37,99,235,0.05);
+      color: var(--text-primary);
+      transform: translateX(2px);
+    }
+    .sidebar-nav a.active {
+      background: rgba(37,99,235,0.07);
+      color: var(--blue);
+      font-weight: 500;
+    }
+    .sidebar-nav a.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: linear-gradient(180deg, var(--blue), var(--purple));
+      border-radius: 0 3px 3px 0;
+    }
+    .sidebar-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: rgba(0,0,0,0.03);
+      color: var(--text-muted);
+      transition: background 0.3s, color 0.3s;
+    }
+    .sidebar-nav a:hover .sidebar-num {
+      background: rgba(37,99,235,0.08);
+      color: var(--blue-light);
+    }
+    .sidebar-nav a.active .sidebar-num {
+      background: rgba(37,99,235,0.1);
+      color: var(--blue);
+    }
+    .sidebar-progress {
+      margin-top: 24px;
+      padding: 0 16px;
+    }
+    .sidebar-progress-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-progress-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .sidebar-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      border-radius: 3px;
+      transition: width 0.5s var(--ease-out-expo);
+    }
+
+    @media (max-width: 1200px) {
+      .sidebar-nav { display: none; }
+      .content-area { padding-left: 80px; }
+    }
+
+    /* ── SCROLLBAR ──────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.15); }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero-header { padding: 140px 24px 70px; }
+      .content-area { padding: 0 24px 60px !important; padding-left: 24px !important; }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+      .provider-card { flex-direction: column; text-align: center; }
+      .terms-card { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-logo">Koch<span>Tech</span></div>
+  <div class="loader-bar-track"><div class="loader-bar"></div></div>
+</div>
+
+<div class="grain"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Koch<span>Tech</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#sluzby">Služby</a></li>
+    <!-- <li><a href="#">Reference</a></li> -->
+    <li><a href="index.html#kontakt" class="nav-cta">Kontakt</a></li>
+  </ul>
+</nav>
+
+<section class="hero-header">
+  <div class="hero-gradient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-header-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Právní dokumentace
+    </div>
+    <h1>Všeobecné <span class="accent">obchodní podmínky</span></h1>
+    <p class="hero-header-sub">Transparentní pravidla spolupráce. Přečtěte si, jak funguje <strong>naše vzájemná dohoda</strong> od první konzultace po finální dodání.</p>
+  </div>
+</section>
+
+<div class="content-area">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar-nav" id="sidebarNav">
+      <div class="sidebar-nav-label">Obsah</div>
+      <ul>
+        <li><a href="#section-01" data-section="section-01"><span class="sidebar-num">01</span>Základní ustanovení</a></li>
+        <li><a href="#section-02" data-section="section-02"><span class="sidebar-num">02</span>Předmět služeb</a></li>
+        <li><a href="#section-03" data-section="section-03"><span class="sidebar-num">03</span>Objednávka a smlouva</a></li>
+        <li><a href="#section-04" data-section="section-04"><span class="sidebar-num">04</span>Platební podmínky</a></li>
+        <li><a href="#section-05" data-section="section-05"><span class="sidebar-num">05</span>Odpovědnost a záruky</a></li>
+        <li><a href="#section-06" data-section="section-06"><span class="sidebar-num">06</span>Závěrečná ustanovení</a></li>
+      </ul>
+      <div class="sidebar-progress">
+        <div class="sidebar-progress-label">
+          <span>Přečteno</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="sidebar-progress-track">
+          <div class="sidebar-progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content-inner">
+
+    <a href="index.html" class="back-btn reveal">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+
+    <!-- Provider card -->
+    <div class="provider-card reveal">
+      <div class="provider-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="provider-info">
+        <h3>Poskytovatel služeb</h3>
+        <p><span>Vladimír Kochan</span> · IČO: 00785679 · Tel.: +420 730 553 971</p>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="terms-card reveal" id="section-01" style="transition-delay:0s">
+      <div class="tc-header">
+        <div class="tc-number blue">01</div>
+        <h2>Základní ustanovení</h2>
+      </div>
+      <div class="tc-body">
+        <p>Tyto všeobecné obchodní podmínky (dále jen „VOP") upravují vztahy mezi poskytovatelem služeb (dále jen „Poskytovatel") a klientem (dále jen „Klient") v oblasti IT služeb, vývoje webových stránek, integrace umělé inteligence a automatizace firemních procesů.</p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="terms-card reveal" id="section-02" style="transition-delay:0.08s">
+      <div class="tc-header">
+        <div class="tc-number purple">02</div>
+        <h2>Předmět služeb</h2>
+      </div>
+      <div class="tc-body">
+        <p>Předmětem služeb je konzultační činnost, tvorba webových stránek, automatizace workflow a integrace AI nástrojů podle individuální domluvy s Klientem.</p>
+        <p><strong>Přesný rozsah služeb</strong> je vždy definován v konkrétní cenové nabídce nebo smlouvě o dílo.</p>
+        <div class="info-box">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <p>Každý projekt je unikátní — rozsah a podmínky jsou vždy přizpůsobeny individuálním potřebám klienta.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="terms-card reveal" id="section-03" style="transition-delay:0.16s">
+      <div class="tc-header">
+        <div class="tc-number teal">03</div>
+        <h2>Objednávka a uzavření smlouvy</h2>
+      </div>
+      <div class="tc-body">
+        <p>Konzultace nabízené zdarma prostřednictvím rezervačního formuláře jsou nezávazné.</p>
+        <p>K uzavření závazné smlouvy dochází až na základě <strong>písemného (e-mailového) potvrzení</strong> cenové nabídky ze strany Klienta, případně podpisem smlouvy o dílo.</p>
+        <ul class="key-points">
+          <li><span class="kp-dot"></span>Bezplatná konzultace je nezávazná</li>
+          <li><span class="kp-dot"></span>Smlouva vzniká potvrzením cenové nabídky</li>
+          <li><span class="kp-dot"></span>Akceptace probíhá e-mailem nebo podpisem</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="terms-card reveal" id="section-04" style="transition-delay:0.24s">
+      <div class="tc-header">
+        <div class="tc-number amber">04</div>
+        <h2>Platební podmínky</h2>
+      </div>
+      <div class="tc-body">
+        <p>Cena za služby je sjednávána individuálně. Není-li dohodnuto jinak, Poskytovatel si vyhrazuje právo požadovat <strong>zálohu před zahájením prací</strong>.</p>
+        <p>Splatnost faktur je standardně <strong>14 dní</strong> od jejich vystavení.</p>
+        <div class="info-box">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <p>Veškeré platby probíhají bezhotovostně na základě vystavené faktury.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="terms-card reveal" id="section-05" style="transition-delay:0.32s">
+      <div class="tc-header">
+        <div class="tc-number rose">05</div>
+        <h2>Odpovědnost a záruky</h2>
+      </div>
+      <div class="tc-body">
+        <p>Poskytovatel odpovídá za to, že služby budou dodány v dohodnutém rozsahu a kvalitě.</p>
+        <p>Poskytovatel však <strong>nenese odpovědnost</strong> za případné výpadky služeb třetích stran (např. výpadky API Google, OpenAI, Make.com apod.), na kterých může být automatizace postavena.</p>
+        <ul class="key-points">
+          <li><span class="kp-dot"></span>Garantovaná kvalita dle smluvního rozsahu</li>
+          <li><span class="kp-dot"></span>Výpadky externích služeb mimo naši odpovědnost</li>
+          <li><span class="kp-dot"></span>Řešení incidentů v nejkratším možném termínu</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="terms-card reveal" id="section-06" style="transition-delay:0.4s">
+      <div class="tc-header">
+        <div class="tc-number indigo">06</div>
+        <h2>Závěrečná ustanovení</h2>
+      </div>
+      <div class="tc-body">
+        <p>Tyto obchodní podmínky jsou platné a účinné od <strong>1. 1. 2026</strong>.</p>
+        <p>Poskytovatel si vyhrazuje právo tyto podmínky měnit. Pro Klienta jsou závazné podmínky platné v době odsouhlasení objednávky.</p>
+        <div class="info-box">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <p>V případě dotazů nás kontaktujte na +420 730 553 971 — vše rádi vysvětlíme.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content-inner -->
+</div>
+
+<div class="effective-date">
+  Dokument platný od 1. ledna 2026 · Poslední aktualizace: leden 2026
+</div>
+
+<footer>
+  <div class="footer-logo">Koch<span>Tech</span></div>
+  <p>© 2026 KochTech. Všechna práva vyhrazena.</p>
+  <div class="footer-links">
+    <a href="podminky.html">Podmínky</a>
+    <a href="gdpr.html">Ochrana dat</a>
+  </div>
+</footer>
+
+<script>
+/* ── LOADER ──────────────────────────────── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2000);
+});
+
+/* ── CUSTOM CURSOR ───────────────────────── */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+if (isTouchDevice) {
+  dot.style.display = 'none';
+  ring.style.display = 'none';
+} else {
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .terms-card, .provider-card, .back-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+}
+
+/* ── NAV SCROLL ──────────────────────────── */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── REVEAL ON SCROLL ────────────────────── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ── SIDEBAR NAVIGATION ──────────────────── */
+(function() {
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+  const sections = [];
+  sidebarLinks.forEach(link => {
+    const id = link.dataset.section;
+    const el = document.getElementById(id);
+    if (el) sections.push({ id, el, link });
+  });
+
+  const progressBar = document.getElementById('progressBar');
+  const progressPercent = document.getElementById('progressPercent');
+
+  function updateSidebar() {
+    const scrollY = window.scrollY + 160;
+    let activeId = sections[0]?.id;
+
+    sections.forEach(({ id, el }) => {
+      if (el.offsetTop <= scrollY) activeId = id;
+    });
+
+    sidebarLinks.forEach(link => {
+      link.classList.toggle('active', link.dataset.section === activeId);
+    });
+
+    // Progress bar
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      const top = contentArea.offsetTop;
+      const height = contentArea.offsetHeight;
+      const progress = Math.min(Math.max((window.scrollY - top + 300) / height, 0), 1);
+      const pct = Math.round(progress * 100);
+      if (progressBar) progressBar.style.width = pct + '%';
+      if (progressPercent) progressPercent.textContent = pct + '%';
+    }
+  }
+
+  window.addEventListener('scroll', updateSidebar, { passive: true });
+  setTimeout(updateSidebar, 100);
+
+  // Smooth scroll with offset
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(link.dataset.section);
+      if (target) {
+        const top = target.offsetTop - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+})();
+
+/* ── CARD TILT ───────────────────────────── */
+document.querySelectorAll('.terms-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-2px) perspective(600px) rotateX(${y * -2}deg) rotateY(${x * 2}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'border-color 0.4s, box-shadow 0.4s, transform 0.6s var(--ease-out-expo)';
+  });
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'border-color 0.4s, box-shadow 0.4s, transform 0.15s ease-out';
+  });
+});
+</script>
+</body>
+</html>
