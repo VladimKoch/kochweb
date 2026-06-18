@@ -1,0 +1,50 @@
+{
+    "cas_ulozeni": 1781107830.090753,
+    "data": [
+        {
+            "nadpis": "Bezpečnostní experti kritizují příliš přísná pravidla u modelu Fable od Anthropicu",
+            "obsah": "Nový AI model Fable od společnosti Anthropic čelí kritice ze strany expertů na kyberbezpečnost kvůli příliš striktním bezpečnostním bariérám. Tyto filtry výzkumníkům brání v efektivním testování zranitelností a provádění legitimních bezpečnostních analýz. Pro firmy to znamená, že využití tohoto modelu pro automatizaci ochrany systémů může být v praxi značně omezené.",
+            "odkaz": "https://techcrunch.com/2026/06/10/cybersecurity-researchers-arent-happy-about-the-guardrails-on-anthropics-fable/"
+        },
+        {
+            "nadpis": "Startup Niteshift získal 7 milionů dolarů na boj proti závislosti na velkých AI platformách",
+            "obsah": "Veteráni ze společnosti Datadog založili nový startup Niteshift, který se zaměřuje na vývoj autonomních AI asistentů pro kódování. Startup získal v počátečním investičním kole seed 7 milionů dolarů od předních andělských investorů. Firma sází na to, že moderní podniky budou preferovat kontrolu nad svými systémy před technologickou závislostí na velkých poskytovatelích AI modelů.",
+            "odkaz": "https://techcrunch.com/2026/06/10/datadog-veterans-launch-ai-coding-startup-niteshift-on-a-bet-against-big-ai-lock-in/"
+        },
+        {
+            "nadpis": "Vesmírná datová centra jako hlavní motor rekordního IPO společnosti SpaceX",
+            "obsah": "Chystané IPO společnosti SpaceX láká investory především na ambiciózní plány v oblasti budování vesmírných datových center. Tento technologický krok může zásadně změnit globální infrastrukturu pro přenos a zpracování dat, což má obrovský význam i pro cloudové služby a AI aplikace. Investoři vnímají tyto vesmírné projekty jako klíčovou příležitost pro budoucí technologickou dominanci.",
+            "odkaz": "https://techcrunch.com/2026/06/10/the-three-hard-tech-moonshots-fueling-spacexs-unbelievable-ipo/"
+        },
+        {
+            "nadpis": "Google po 25 letech radikálně mění vyhledávací pole na AI konverzační rozhraní",
+            "obsah": "Google na konferenci I/O představil největší změnu svého vyhledávače v historii, která mění tradiční zadávání klíčových slov na multimodální konverzaci poháněnou modelem Gemini 3.5 Flash. Uživatelé nyní mohou vyhledávat pomocí textu, obrázků, videí či PDF souborů a přímo v rozhraní generovat interaktivní miniaplikace nebo zadávat úkoly autonomním agentům. Pro weby a online marketing to znamená nutnost přehodnotit dosavadní SEO strategie zaměřené na klasické odkazy.",
+            "odkaz": "https://venturebeat.com/technology/google-just-redesigned-the-search-box-for-the-first-time-in-25-years-heres-why-it-matters-more-than-you-think"
+        },
+        {
+            "nadpis": "Cloudová platforma Railway získala 100 milionů dolarů na boj proti AWS pomocí AI nativní infrastruktury",
+            "obsah": "Startup Railway, který spravuje cloudovou platformu pro vývojáře, získal investici ve výši 100 milionů dolarů na rozvoj své extrémně rychlé infrastruktury. Platforma nabízí nasazení aplikací za méně než jednu sekundu, což je klíčové pro držení kroku s autonomními AI agenty píšícími kód v reálném čase. Společnost se rozhodla zcela opustit Google Cloud a budovat vlastní datová centra, čímž klientům přináší až 50% úsporu nákladů oproti tradičním cloudům.",
+            "odkaz": "https://venturebeat.com/infrastructure/railway-secures-usd100-million-to-challenge-aws-with-ai-native-cloud"
+        },
+        {
+            "nadpis": "Bezplatný open-source nástroj Goose konkuruje drahému Claude Code pro programování s AI",
+            "obsah": "Společnost Block představila bezplatného open-source AI asistenta Goose, který vývojářům umožňuje automatizovat kódování přímo na jejich lokálních počítačích. Tento krok reaguje na kritiku drahých tarifů a omezujících limitů konkurenčního nástroje Claude Code od Anthropicu, který stojí až 200 dolarů měsíčně. Goose podporuje různé jazykové modely a zajišťuje maximální bezpečnost, protože firemní kód nikdy neopustí lokální disk.",
+            "odkaz": "https://venturebeat.com/infrastructure/claude-code-costs-up-to-usd200-a-month-goose-does-the-same-thing-for-free"
+        },
+        {
+            "nadpis": "Walmart spouští masivní slevovou kampaň jako přímou konkurenci pro Amazon Prime Day",
+            "obsah": "Americký maloobchodní gigant Walmart spustil rozsáhlé slevové akce na spotřební elektroniku a chytrá zařízení, aby konkuroval nadcházejícímu nákupnímu svátku Amazon Prime Day. Pro byznys a e-commerce to ukazuje zostřující se konkurenční boj v oblasti prodeje technologií, jako jsou notebooky či chytré brýle. Obchodníci se snaží přilákat zákazníky dříve, než Amazon spustí své hlavní akce.",
+            "odkaz": "https://www.zdnet.com/article/best-early-amazon-prime-day-walmart-deals-2026/"
+        },
+        {
+            "nadpis": "E-commerce trendy: Amazon předčasně láká na nejlevnější technologické vychytávky pod 25 dolarů",
+            "obsah": "V rámci příprav na nákupní festival Prime Day představil Amazon první vlnu slev zaměřenou na cenově dostupné technologické doplňky. Tato strategie ukazuje, jak e-commerce platformy využívají levné impulsivní nákupy k nastartování nákupní horečky u spotřebitelů. Pro online prodejce je to ukázka efektivního marketingu postaveného na testovaných a vysoce hodnocených drobnostech.",
+            "odkaz": "https://www.zdnet.com/article/best-early-amazon-prime-day-deals-under-25-2026/"
+        },
+        {
+            "nadpis": "Costco se zapojuje do konkurenčního boje s Amazonem slevami na prémiovou elektroniku",
+            "obsah": "Velkoobchodní řetězec Costco představil vlastní konkurenční nabídky cílící na období Amazon Prime Day, se zaměřením na prémiová zařízení Apple a televizory. Tento krok potvrzuje trend, kdy tradiční kamenné i online řetězce koordinují své největší promo akce podle kalendáře Amazonu. Pro technologický byznys to znamená příležitost k nákupu firemního vybavení za výrazně výhodnějších podmínek.",
+            "odkaz": "https://www.zdnet.com/article/best-early-amazon-prime-day-costco-deals-2026/"
+        }
+    ]
+}

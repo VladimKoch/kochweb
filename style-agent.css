@@ -1,0 +1,160 @@
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    /* ── WIDGET ROOT VARIABLES ─────────────────── */
+    :root {
+      --kt-blue: #2563eb;
+      --kt-blue-light: #3b82f6;
+      --kt-purple: #7c3aed;
+      --kt-bg-white: #ffffff;
+      --kt-text-primary: #1a1a2e;
+      --kt-text-secondary: rgba(26,26,46,0.6);
+      --kt-text-muted: rgba(26,26,46,0.35);
+      --kt-border-light: rgba(0,0,0,0.08);
+      --kt-shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --kt-shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+      --kt-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset pro widget izolaci (aby nenarušil tvůj web) */
+    .kt-widget * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+
+    /* ── WIDGET WRAPPER ────────────────────────── */
+    .kt-widget {
+      position: fixed;
+      bottom: 50px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    /* ── TOGGLE BUTTON (BUBLINA) ───────────────── */
+    .kt-chat-toggle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--kt-blue), var(--kt-purple));
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--kt-shadow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.3s var(--kt-ease), box-shadow 0.3s;
+    }
+    .kt-chat-toggle:hover { transform: scale(1.05); }
+    .kt-chat-toggle svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 2; transition: opacity 0.3s, transform 0.3s; }
+    
+    .kt-chat-toggle .icon-close { position: absolute; opacity: 0; transform: scale(0.5) rotate(-90deg); }
+    .kt-widget.open .kt-chat-toggle .icon-chat { opacity: 0; transform: scale(0.5) rotate(90deg); }
+    .kt-widget.open .kt-chat-toggle .icon-close { opacity: 1; transform: scale(1) rotate(0deg); }
+
+    /* Notifikační odznak */
+    .kt-badge {
+      position: absolute;
+      top: -2px; right: -2px;
+      width: 14px; height: 14px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid var(--kt-bg-white);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .kt-badge.hidden { opacity: 0; transform: scale(0); }
+
+    /* Tvé animace */
+    @keyframes ktPulseRing {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 0; }
+    }
+    @keyframes ktWiggle {
+      0% { transform: rotate(0deg); }
+      10% { transform: rotate(-12deg) scale(1.1); }
+      20% { transform: rotate(10deg) scale(1.1); }
+      30% { transform: rotate(-8deg); }
+      40% { transform: rotate(6deg); }
+      50% { transform: rotate(-3deg); }
+      60% { transform: rotate(0deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .kt-chat-toggle.wiggle { animation: ktWiggle 0.8s var(--kt-ease); }
+
+    /* ── CHAT BOX ──────────────────────────────── */
+    .kt-chat-box {
+      width: 320px;
+      height: 450px;
+      max-height: calc(100vh - 100px);
+      background: var(--kt-bg-white);
+      border-radius: 20px;
+      box-shadow: var(--kt-shadow-lg);
+      border: 1px solid var(--kt-border-light);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.4s var(--kt-ease), transform 0.4s var(--kt-ease);
+      transform-origin: bottom right;
+    }
+    .kt-widget.open .kt-chat-box { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+    /* Header */
+    .kt-header { padding: 16px 20px; border-bottom: 1px solid var(--kt-border-light); display: flex; align-items: center; gap: 12px; background: #fafafa; }
+    .kt-avatar { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--kt-blue), var(--kt-purple)); display: flex; align-items: center; justify-content: center; position: relative; }
+    .kt-avatar svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 1.5; }
+    .kt-status-dot { position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; background: #22c55e; border-radius: 50%; border: 2px solid #fff; }
+    .kt-header-text h3 { font-size: 0.95rem; font-weight: 600; color: var(--kt-text-primary); margin-bottom: 2px; }
+    .kt-header-text p { font-size: 0.75rem; color: #22c55e; font-weight: 500; }
+
+    /* Welcome state */
+    .kt-welcome { padding: 40px 20px; text-align: center; }
+    .kt-welcome.hidden { display: none; }
+    .kt-welcome h4 { font-size: 1.1rem; color: var(--kt-text-primary); margin-bottom: 8px; }
+    .kt-welcome p { font-size: 0.85rem; color: var(--kt-text-secondary); line-height: 1.5; margin-bottom: 20px; }
+    .kt-quick-btns { display: flex; flex-direction: column; gap: 8px; }
+    .kt-quick-btn { padding: 10px 16px; background: rgba(37,99,235,0.05); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; font-size: 0.85rem; color: var(--kt-blue); cursor: pointer; transition: 0.2s; text-align: left; font-weight: 500; }
+    .kt-quick-btn:hover { background: rgba(37,99,235,0.1); transform: translateX(4px); }
+
+    /* Messages area */
+    .kt-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; display: none; }
+    .kt-messages::-webkit-scrollbar { width: 4px; }
+    .kt-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+    
+    .kt-msg { display: flex; gap: 8px; max-width: 85%; animation: ktMsgIn 0.3s var(--kt-ease); }
+    @keyframes ktMsgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .kt-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .kt-msg.bot { align-self: flex-start; }
+    
+    .kt-msg-bubble { padding: 12px 16px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; }
+    .kt-msg.bot .kt-msg-bubble { background: #f1f5f9; color: var(--kt-text-primary); border-top-left-radius: 4px; }
+    .kt-msg.user .kt-msg-bubble { background: var(--kt-blue); color: #fff; border-top-right-radius: 4px; }
+    
+    /* Typing indicator */
+    .kt-typing { display: none; align-items: center; gap: 4px; padding: 12px 16px; background: #f1f5f9; border-radius: 16px; border-top-left-radius: 4px; align-self: flex-start; margin-bottom: 16px; }
+    .kt-typing.active { display: flex; }
+    .kt-typing span { width: 6px; height: 6px; background: var(--kt-text-muted); border-radius: 50%; animation: ktTypingBounce 1.4s infinite; }
+    .kt-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .kt-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes ktTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+    /* Input area */
+    .kt-input-area { padding: 16px; border-top: 1px solid var(--kt-border-light); background: var(--kt-bg-white); }
+    .kt-input-wrap { display: flex; align-items: center; gap: 8px; background: #f8fafc; border: 1px solid var(--kt-border-light); border-radius: 12px; padding: 4px 4px 4px 16px; }
+    .kt-input-wrap:focus-within { border-color: var(--kt-blue-light); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .kt-input { flex: 1; border: none; background: transparent; outline: none; font-size: 0.9rem; color: var(--kt-text-primary); padding: 8px 0; }
+    .kt-send-btn { width: 36px; height: 36px; border-radius: 10px; background: var(--kt-blue); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .kt-send-btn:hover { background: var(--kt-blue-light); }
+    .kt-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .kt-send-btn svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; }
+    
+    .kt-footer { text-align: center; font-size: 0.65rem; color: var(--kt-text-muted); margin-top: 8px; }
+
+    /* Mobile responsive */
+    @media (max-width: 480px) {
+      .kt-widget { bottom: 0; right: 0; width: 100%; }
+      .kt-chat-box { width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; }
+      .kt-chat-toggle { display: none; } /* On mobile, box fills screen */
+    }
