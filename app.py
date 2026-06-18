@@ -9,6 +9,7 @@ import feedparser                          # Stahování RSS článků z interne
 import json                                # Práce s JSON formátem
 import os                                  # Pro kontrolu, zda soubor s pamětí existuje
 import time                                # Pro měření času (jak staré jsou články)
+from dotenv import load_dotenv
 
 # =====================================================================
 # 2. NASTAVENÍ A ZDROJE
@@ -17,7 +18,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Vlož svůj API klíč
-client = genai.Client(api_key="AIzaSyBXj4f2nH45qSjz8zxIW1iGzdVMmGSM9tk")
+load_dotenv()
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Zdroje novinek. Pokud jich přidáš více, doporučuji stahovat z každého jen pár článků.
 RSS_FEEDS = [
