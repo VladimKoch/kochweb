@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ochrana osobních údajů | KochTech</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue: #2563eb;
-      --blue-light: #3b82f6;
-      --blue-glow: #60a5fa;
-      --purple: #7c3aed;
-      --purple-light: #a78bfa;
+      --blue: #179ccb;
+      --blue-light: #35c4ed;
+      --blue-glow: #35c4ed;
+      --purple: #0076a3; /* Nahrazeno tmavším odstínem z loga */
+      --purple-light: #0da6d6;
       --bg: #f8f9fc;
       --bg-white: #ffffff;
       --glass-bg: rgba(255,255,255,0.7);
       --glass-border: rgba(0,0,0,0.06);
-      --text-primary: #1a1a2e;
-      --text-secondary: rgba(26,26,46,0.55);
-      --text-muted: rgba(26,26,46,0.35);
+      --text-primary: #17233b;
+      --text-secondary: rgba(23, 35, 59, 0.65);
+      --text-muted: rgba(23, 35, 59, 0.45);
       --border-light: rgba(0,0,0,0.06);
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
@@ -55,7 +55,7 @@
     .cursor-ring {
       position: fixed;
       width: 36px; height: 36px;
-      border: 1px solid rgba(37,99,235,0.3);
+      border: 1px solid rgba(23,156,203,0.3);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9998;
@@ -64,7 +64,7 @@
     }
     .cursor-ring.hovering {
       width: 56px; height: 56px;
-      border-color: rgba(37,99,235,0.5);
+      border-color: rgba(23,156,203,0.5);
     }
 
     /* ── GRAIN OVERLAY ─────────────────────────── */
@@ -176,8 +176,8 @@
     .nav-links a:hover::after { width: 100%; }
     .nav-cta {
       padding: 8px 20px !important;
-      background: rgba(37,99,235,0.08);
-      border: 1px solid rgba(37,99,235,0.15);
+      background: rgba(23,156,203,0.08);
+      border: 1px solid rgba(23,156,203,0.15);
       border-radius: 6px;
       color: var(--blue) !important;
       font-weight: 500 !important;
@@ -185,8 +185,8 @@
     }
     .nav-cta::after { display: none !important; }
     .nav-cta:hover {
-      background: rgba(37,99,235,0.14) !important;
-      border-color: rgba(37,99,235,0.3) !important;
+      background: rgba(23,156,203,0.14) !important;
+      border-color: rgba(23,156,203,0.3) !important;
     }
 
     /* ── HERO HEADER ───────────────────────────── */
@@ -211,19 +211,19 @@
     }
     .orb-1 {
       width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(23,156,203,0.12) 0%, transparent 70%);
       top: -20%; left: 10%;
       animation-delay: 0.3s !important;
     }
     .orb-2 {
       width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,118,163,0.1) 0%, transparent 70%);
       top: -10%; right: 15%;
       animation-delay: 0.6s !important;
     }
     .orb-3 {
       width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(53,196,237,0.08) 0%, transparent 70%);
       bottom: 0; left: 40%;
       animation-delay: 0.9s !important;
     }
@@ -256,8 +256,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(37,99,235,0.06);
-      border: 1px solid rgba(37,99,235,0.12);
+      background: rgba(23,156,203,0.06);
+      border: 1px solid rgba(23,156,203,0.12);
       border-radius: 999px;
       padding: 7px 18px;
       font-size: 0.7rem;
@@ -389,7 +389,7 @@
     }
     .terms-card.visible { opacity: 1; transform: translateY(0); }
     .terms-card:hover {
-      border-color: rgba(37,99,235,0.15);
+      border-color: rgba(23,156,203,0.15);
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
@@ -422,8 +422,8 @@
       font-size: 0.85rem;
       flex-shrink: 0;
     }
-    .tc-number.blue { background: rgba(37,99,235,0.08); color: var(--blue); }
-    .tc-number.purple { background: rgba(124,58,237,0.08); color: var(--purple); }
+    .tc-number.blue { background: rgba(23,156,203,0.08); color: var(--blue); }
+    .tc-number.purple { background: rgba(0,118,163,0.08); color: var(--purple); }
     .tc-number.teal { background: rgba(20,184,166,0.08); color: #14b8a6; }
     .tc-number.amber { background: rgba(245,158,11,0.08); color: #f59e0b; }
     .tc-number.rose { background: rgba(244,63,94,0.08); color: #f43f5e; }
@@ -449,8 +449,8 @@
 
     /* ── INFO BOX ──────────────────────────────── */
     .info-box {
-      background: rgba(37,99,235,0.04);
-      border: 1px solid rgba(37,99,235,0.1);
+      background: rgba(23,156,203,0.04);
+      border: 1px solid rgba(23,156,203,0.1);
       border-radius: 10px;
       padding: 16px 20px;
       margin-top: 16px;
@@ -506,15 +506,15 @@
       font-weight: 500;
       text-decoration: none;
       padding: 10px 20px;
-      background: rgba(37,99,235,0.06);
-      border: 1px solid rgba(37,99,235,0.12);
+      background: rgba(23,156,203,0.06);
+      border: 1px solid rgba(23,156,203,0.12);
       border-radius: 8px;
       transition: background 0.3s, border-color 0.3s, transform 0.3s var(--ease-out-expo);
       margin-bottom: 40px;
     }
     .back-btn:hover {
-      background: rgba(37,99,235,0.12);
-      border-color: rgba(37,99,235,0.25);
+      background: rgba(23,156,203,0.12);
+      border-color: rgba(23,156,203,0.25);
       transform: translateX(-4px);
     }
     .back-btn svg {
@@ -615,12 +615,12 @@
       position: relative;
     }
     .sidebar-nav a:hover {
-      background: rgba(37,99,235,0.05);
+      background: rgba(23,156,203,0.05);
       color: var(--text-primary);
       transform: translateX(2px);
     }
     .sidebar-nav a.active {
-      background: rgba(37,99,235,0.07);
+      background: rgba(23,156,203,0.07);
       color: var(--blue);
       font-weight: 500;
     }
@@ -651,11 +651,11 @@
       transition: background 0.3s, color 0.3s;
     }
     .sidebar-nav a:hover .sidebar-num {
-      background: rgba(37,99,235,0.08);
+      background: rgba(23,156,203,0.08);
       color: var(--blue-light);
     }
     .sidebar-nav a.active .sidebar-num {
-      background: rgba(37,99,235,0.1);
+      background: rgba(23,156,203,0.1);
       color: var(--blue);
     }
     .sidebar-progress {
@@ -711,7 +711,7 @@
 <body>
 
 <div class="loader" id="loader">
-  <div class="loader-logo">Koch<span>Tech</span></div>
+  <div class="loader-logo">Pro<span>Firmio</span></div>
   <div class="loader-bar-track"><div class="loader-bar"></div></div>
 </div>
 
@@ -720,7 +720,7 @@
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav id="mainNav">
-  <a href="#" class="nav-logo">Koch<span>Tech</span></a>
+  <a href="#" class="nav-logo">Pro<span>Firmio</span></a>
   <ul class="nav-links">
     <li><a href="index.html#sluzby">Služby</a></li>
     <!-- <li><a href="#">Reference</a></li> -->
@@ -782,7 +782,7 @@
       </div>
       <div class="provider-info">
         <h3>Správce osobních údajů</h3>
-        <p><span>Vladimír Kochan</span> · IČO: 00785679 · Tel.: +420 730 553 971 e-mail: kochtechai@gmail.com</p>
+        <p><span>Vladimír Kochan</span> · IČO: 00785679 · Tel.: +420 730 553 971 · e-mail: profirmio@gmail.com</p>
       </div>
     </div>
 
@@ -869,7 +869,7 @@
         </ul>
         <div class="info-box" style="margin-top:20px;">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <p>Pokud chcete uplatnit kterékoli z těchto práv, kontaktujte nás na telefonním čísle: <strong>+420 730 553 971</strong> nebo e-mailem: <strong>KochTechAI@gmail.com</strong></p>
+          <p>Pokud chcete uplatnit kterékoli z těchto práv, kontaktujte nás na telefonním čísle: <strong>+420 730 553 971</strong> nebo e-mailem: <strong>profirmio@gmail.com</strong></p>
         </div>
       </div>
     </div>
@@ -882,8 +882,8 @@
 </div>
 
 <footer>
-  <div class="footer-logo">Koch<span>Tech</span></div>
-  <p style="flex:1; text-align:center;">© 2026 KochTech. Všechna práva vyhrazena.</p>
+  <div class="footer-logo">Pro<span>Firmio</span></div>
+  <p style="flex:1; text-align:center;">© 2026 ProFirmio. Všechna práva vyhrazena.</p>
   <div class="footer-links">
     <a href="podminky.html">Podmínky</a>
     <a href="gdpr.html">Ochrana dat</a>
