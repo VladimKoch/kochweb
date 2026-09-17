@@ -1135,48 +1135,98 @@
     ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.15); }
 
     /* ── RESPONSIVE ──────────────────────────────── */
+    /* ── RESPONSIVE ──────────────────────────────── */
     @media (max-width: 1100px) {
       .hero-visual { display: none; }
       .hero { padding: 0 48px; }
       section { padding: 80px 48px; }
+      /* Zmenšíme a zprůhledníme animaci na pozadí, aby nerušila text */
+      .machine-wrap { transform: translateY(-50%) scale(0.7); opacity: 0.3; right: -100px; }
     }
+
     @media (max-width: 900px) {
+      /* Mřížky pod sebe na tabletu */
       .steps-grid, .services-grid, .testimonials-grid {
         grid-template-columns: 1fr;
-        max-width: 480px;
+        max-width: 100%;
       }
       .stats-inner { flex-direction: column; gap: 32px; }
-      .stat-divider { width: 48px; height: 1px; }
-      .hero { padding: 0 24px; }
-      section { padding: 64px 24px; }
-      nav { padding: 0 24px; }
-      .nav-links { gap: 20px; }
-      footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
-    }
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
+      .stat-divider { display: none; } /* Na menších displejích čáry schováme */
+      .hero { padding: 0 32px; }
+      section { padding: 64px 32px; }
     }
 
-    /* ── MAGNETIC BUTTON WRAPPER ──────────────────── */
-    .magnetic { display: inline-block; }
-
-
-    /* Obal pro novinky */
-    .container { max-width: 800px; margin: 40px auto; padding: 20px; }
-    .hlavni-nadpis { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; text-align: center; color: var(--text-primary); }
-    .podnadpis { text-align: center; color: var(--text-secondary); margin-bottom: 30px; line-height: 1.5; }
-    
-    /* Vzhled jednotlivé karty s novinkou */
-    .trend-karta {
-      background: white; padding: 24px; border-radius: 16px; 
-      margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      border: 1px solid #e5e7eb; transition: transform 0.2s, box-shadow 0.2s;
+    @media (max-width: 768px) {
+      /* Zrušíme fixní výšku navigace a necháme ji flexibilní */
+      nav {
+        height: auto;
+        padding: 16px 20px;
+        flex-direction: column; /* Logo a odkazy pod sebe */
+        gap: 16px;
+        background: rgba(248,249,252,0.95);
+      }
+      nav.scrolled { padding: 12px 20px; }
+      .nav-links {
+        gap: 15px;
+        flex-wrap: wrap; /* Pokud se odkazy nevejdou, zalamují se */
+        justify-content: center;
+      }
+      
+      /* Úvodní obrazovka (Hero) */
+      .hero { 
+        padding: 140px 20px 60px; /* Větší horní padding kvůli větší navigaci */
+        text-align: center; 
+      }
+      .hero-content { margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+      .hero-badge { margin: 0 auto 24px auto; }
+      .hero h1 { font-size: 2.5rem; text-align: center; }
+      .hero-sub { text-align: center; font-size: 0.95rem; }
+      
+      /* Tlačítka přes celou šířku telefonu */
+      .hero-cta-group { 
+        flex-direction: column; 
+        width: 100%; 
+        gap: 16px; 
+      }
+      .hero-cta-group .magnetic, 
+      .btn-primary, 
+      .btn-secondary { 
+        width: 100%; 
+        justify-content: center; 
+      }
+      
+      /* Úprava canvasu (ozubená kola), aby neblokoval klikání */
+      .machine-wrap { 
+        transform: translateY(-50%) scale(0.5); 
+        opacity: 0.15; 
+        pointer-events: none; 
+      }
+      
+      /* Odsazení obecných sekcí na mobilu */
+      section { padding: 50px 20px; }
+      .section-title { font-size: 2rem; }
+      
+      /* Formulář "Chci konzultaci" */
+      .cta-form { flex-direction: column; width: 100%; }
+      .cta-input { width: 100%; text-align: center; }
+      .cta-form .magnetic, 
+      .cta-form .btn-primary { width: 100%; justify-content: center; }
+      
+      /* Patička */
+      footer { 
+        padding: 40px 20px; 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 24px; 
+      }
+      footer div[style*="display:flex"] { 
+        justify-content: center; 
+        width: 100%; 
+        gap: 20px; 
+      }
     }
-    .trend-karta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
-    .trend-karta h4 { margin: 0 0 12px 0; font-size: 1.25rem; color: var(--blue); font-family: 'Space Grotesk', sans-serif; }
-    .trend-karta p { margin: 0 0 20px 0; line-height: 1.6; color: var(--text-secondary); font-size: 0.95rem; }
-    .trend-karta a { display: inline-block; padding: 8px 16px; background: rgba(23,156,203,0.1); color: var(--blue); text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.85rem; transition: background 0.2s; }
-    .trend-karta a:hover { background: rgba(23,156,203,0.2); }
-    
-    /* Načítací text */
-    .status-text { text-align: center; color: var(--text-secondary); font-weight: 500; padding: 40px 0; }
+
+    /* Zcela skryje custom kurzor na dotykových zařízeních (mobily/tablety) */
+    @media (hover: none) and (pointer: coarse) {
+      .cursor-dot, .cursor-ring { display: none !important; }
+    }
