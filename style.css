@@ -1156,31 +1156,34 @@
       section { padding: 64px 32px; }
     }
 
-    @media (max-width: 768px) {
+   @media (max-width: 768px) {
       /* Zrušíme fixní výšku navigace a necháme ji flexibilní */
       nav {
         height: auto;
         padding: 16px 20px;
-        flex-direction: column; /* Logo a odkazy pod sebe */
+        flex-direction: column;
         gap: 16px;
-        background: rgba(248,249,252,0.95);
+        background: rgba(248,249,252,0.98); /* Mírně plnější barva, aby neprosvítal text pod menu */
       }
       nav.scrolled { padding: 12px 20px; }
       .nav-links {
         gap: 15px;
-        flex-wrap: wrap; /* Pokud se odkazy nevejdou, zalamují se */
+        flex-wrap: wrap;
         justify-content: center;
       }
       
-      /* Úvodní obrazovka (Hero) */
+      /* Úvodní obrazovka (Hero) - OPRAVA PŘEKRÝVÁNÍ */
       .hero { 
-        padding: 140px 20px 60px; /* Větší horní padding kvůli větší navigaci */
+        /* Výrazně větší horní odsazení (180px), aby menu nezakrývalo hlavní nadpis */
+        padding: 180px 20px 80px !important; 
+        /* Vypneme 100vh, aby se prvky nemačkaly na sebe, pokud má telefon menší displej */
+        min-height: auto !important;
         text-align: center; 
       }
       .hero-content { margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
       .hero-badge { margin: 0 auto 24px auto; }
       .hero h1 { font-size: 2.5rem; text-align: center; }
-      .hero-sub { text-align: center; font-size: 0.95rem; }
+      .hero-sub { text-align: center; font-size: 0.95rem; margin-bottom: 30px; }
       
       /* Tlačítka přes celou šířku telefonu */
       .hero-cta-group { 
@@ -1194,6 +1197,11 @@
         width: 100%; 
         justify-content: center; 
       }
+
+      /* ÚPLNĚ SCHOVÁME "Scroll" indikátor na mobilu, aby se nepřekrýval s tlačítkem */
+      .scroll-indicator {
+        display: none !important;
+      }
       
       /* Úprava canvasu (ozubená kola), aby neblokoval klikání */
       .machine-wrap { 
@@ -1203,7 +1211,7 @@
       }
       
       /* Odsazení obecných sekcí na mobilu */
-      section { padding: 50px 20px; }
+      section { padding: 60px 20px; }
       .section-title { font-size: 2rem; }
       
       /* Formulář "Chci konzultaci" */
@@ -1224,9 +1232,4 @@
         width: 100%; 
         gap: 20px; 
       }
-    }
-
-    /* Zcela skryje custom kurzor na dotykových zařízeních (mobily/tablety) */
-    @media (hover: none) and (pointer: coarse) {
-      .cursor-dot, .cursor-ring { display: none !important; }
     }
