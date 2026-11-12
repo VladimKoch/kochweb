@@ -47,7 +47,7 @@ const DEFAULT_STATE = {
   chatbot: {
     enabled: true,
     provider: 'gemini',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash',
     temperature: 0.6,
     maxTokens: 500,
     systemPrompt: `Jsi přátelský a profesionální AI konzultant společnosti ProFirmio (Vladimír Kochan, tel. 730 553 971, e-mail profirmio@gmail.com).
