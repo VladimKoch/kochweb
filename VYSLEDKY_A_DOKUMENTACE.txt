@@ -1,0 +1,159 @@
+================================================================================
+PROFIRMIO – DOKUMENTACE & PŘEHLED VYTVOŘENÉHO ADMIN CENTRA (VERCEL READY)
+Datum vyhotovení: 11. 11. 2026
+================================================================================
+
+Tento soubor shrnuje kompletní přehled toho, co bylo na webu vytvořeno, co je
+plně funkční ihned po otevření a které externí služby (AI API klíče, telefonní
+ústřednu, cloudovou databázi) si můžete kdykoliv dopojit.
+
+--------------------------------------------------------------------------------
+1. CO VŠECHNO SE PODAŘILO KOMPLETNĚ VYTVOŘIT (100% HOTOVO A FUNKČNÍ)
+--------------------------------------------------------------------------------
+
+A) NOVÁ ADMINISTRÁTORSKÁ STRÁNKA (admin.html + admin.css + admin.js)
+   - Dostupná na adrese `/admin.html` nebo čisté URL `/admin` (díky vercel.json)
+     a také přes odkaz „Admin“ v patičce hlavního webu `index.html`.
+   - Zabezpečená přihlašovací obrazovkou:
+     * Výchozí heslo: `profirmio2026` (nebo `admin123`)
+     * Na Vercelu lze nastavit vlastní heslo přes proměnnou `ADMIN_PASSWORD`.
+   - Design plně ladí s vizuální identitou ProFirmio (fonty Space Grotesk + Inter,
+     firemní azurové/modré přechody, přehledný tmavý sidebar a světlé karty).
+
+B) DATABÁZE FIREM – KLIENTŮ (Multi-Tenant CRM pro Chat & Volací Agenty)
+   - Kompletní správa firem, kterým zprostředkováváte Chat Agenta a Volacího Agenta.
+   - U každé firmy můžete evidovat a upravovat:
+     * Firemní údaje: Název firmy, IČO, obor, kontaktní osoba, e-mail, telefon,
+       webová doména klienta, stav (Aktivní / V testování / Pozastaveno),
+       měsíční paušál v Kč (automaticky počítá vaše celkové měsíční MRR!).
+     * Chat Agent firmy: Zapnuto/Vypnuto, vlastní jméno bota, vlastní barva
+       widgetu pro web klienta, uvítací zpráva, vlastní System Prompt a vlastní
+       Znalostní báze firmy (ceník, otevírací doba, služby), rychlá tlačítka,
+       Webhook URL (Make/n8n) a počítadlo konverzací.
+     * Volací Hlasový Agent firmy: Zapnuto/Vypnuto, přiřazené telefonní číslo,
+       číslo pro přepojení na živého operátora (Transfer Number), poskytovatel
+       hlasu, jméno hlasu, úvodní pozdrav při zvednutí, scénář hovoru (Prompt),
+       provozní doba a statistika provolaných minut/hovorů.
+   - Vyhledávání a filtrování firem (Všechny, Aktivní, Testování, Volací, Chat).
+   - Předpřipravené 4 vzorové firmy (ProFirmio, DentalCare Clinic Praha,
+     AutoServis Kolář Brno, MoravaDomy Reality), abyste si vše mohli ihned
+     vyzkoušet v praxi.
+   - Tlačítko „📋 Embed“ u každé firmy vygeneruje 1-řádkový `<script>` kód, který
+     vložíte na web klienta a jemu se automaticky načte widget v jeho barvách
+     a s jeho AI agentem!
+
+C) OVLÁDÁNÍ CHATBOTA + ŽIVÝ SIMULÁTOR V ADMINU
+   - Možnost přepínat mezi globálním chatbotem ProFirmio a libovolnou firmou
+     z vaší databáze.
+   - Nastavení AI poskytovatele (Google Gemini, OpenAI GPT-4o, Make/n8n Webhook),
+     modelu, teploty (kreativity), max. délky odpovědi a System Promptu.
+   - Rychlé šablony promptů na 1 klik (B2B Prodej, Ordinace/Služby, E-shop).
+   - Editor Znalostní báze & FAQ (přidávání, úprava a mazání otázek a odpovědí).
+   - Automatické rozpoznání e-mailu a českého telefonního čísla ve zprávě
+     návštěvníka -> automaticky uloží nový Lead do sekce „Leady & Historie“
+     a případně odešle data na váš Webhook (Make / n8n / CRM).
+   - Živý Chat Simulátor přímo v pravém panelu administrace.
+
+D) OVLÁDÁNÍ HLASOVÉHO BOTA (VOICE AGENT) + ŽIVÝ TELEFONNÍ TESTER
+   - Nastavení platformy (ElevenLabs, Vapi.ai, Retell AI, OpenAI Realtime,
+     Web Speech CZ), Voice ID, rychlosti řeči, telefonního čísla, přepojovacího
+     čísla, úvodního pozdravu při zvednutí a scénáře hovoru.
+   - INTERAKTIVNÍ HLASOVÝ SIMULÁTOR PŘÍMO V PROHLÍŽEČI:
+     * Vypadá a funguje jako živý telefonní hovor s animovanými zvukovými vlnami
+       a časovačem hovoru.
+     * Hlasový bot na vás SKUTEČNĚ MLUVÍ ČESKY (přes ElevenLabs MP3 audio, pokud
+       zadáte klíč, nebo přes vestavěný český hlas prohlížeče Web Speech API).
+     * Můžete na něj MLUVIT PŘES MIKROFON (rozpoznávání češtiny `cs-CZ`) nebo
+       mu poslat odpověď textem.
+     * Po zavěšení se celý přepis hovoru (Transcript) automaticky uloží do
+       historie hovorů!
+   - Sekce pro vytočení odchozího hovoru (Outbound Call) přes Vapi API nebo
+     testovací záznam.
+
+E) GRAFIKA & VZHLED WIDGETU (VISUAL STUDIO) + VYLEPŠENÝ WEBOVÝ WIDGET
+   - Kompletní vizuální nastavení chatovacího a hlasového widgetu:
+     * 6 hotových barevných motivů na 1 klik (ProFirmio Azurová, Královská Modrá,
+       Smaragdová Klinika, Fialová AI, Dark Mode, Zlatá Luxury).
+     * Vlastní barvy (primární, sekundární gradient, pozadí okna, hlavička,
+       bublina bota, bublina uživatele).
+     * Nastavení pozice (vpravo/vlevo dole), šířky, výšky, zaoblení rohů,
+       velikosti plovoucího tlačítka a ikony avatara (Čip, Robot, Blesk,
+       Sluchátka nebo vlastní URL obrázku).
+     * Úprava všech textů a rychlých tlačítek (Quick Buttons).
+     * Přepínače: Povolit záložku „Hovor“ přímo ve widgetu, Wiggle animace,
+       zvukový efekt cinknutí při zprávě.
+   - ŽIVÝ NÁHLED: Každá změna barvy, zaoblení nebo textu se v téže vteřině
+     projeví na widgetu přímo na stránce!
+   - Na hlavním webu (`index.html`) je nyní widget plně aktivní a obsahuje
+     jak záložku „Chat“, tak záložku „Hovor“.
+
+F) KOMPATIBILITA S VERCELEM (Serverless API `/api/*` + `vercel.json`)
+   - Místo starého lokálního Python serveru (`127.0.0.1:5000`), který na Vercelu
+     nemohl běžet jako trvalý proces, byla vytvořena kompletní sada **Vercel
+     Serverless Functions** ve složce `/api`:
+     * `/api/auth.js`   – Ověření hesla admina a kontrola Vercel ENV proměnných.
+     * `/api/data.js`   – Načítání a ukládání nastavení + veřejné API pro
+                          klientské widgety (`/api/data?clientId=...`).
+     * `/api/chat.js`   – AI endpoint pro Chatbota (podporuje Gemini API,
+                          OpenAI API, Webhooky i chytrý český lokální fallback).
+     * `/api/voice.js`  – AI endpoint pro Hlasového Bota (konverzace, ElevenLabs
+                          TTS generování zvuku, Vapi odchozí hovory a webhooky).
+     * `/api/trendy.js` – Serverless náhrada pro stránku `live-trendy.html`.
+     * `/api/_store.js` – Databázová vrstva (podporuje Vercel KV / Upstash Redis,
+                          `/tmp` cache i lokální JSON zálohu).
+
+--------------------------------------------------------------------------------
+2. CO JE POTŘEBA DOPOJIT Z VAŠÍ STRANY (CO BEZ EXTERNÍCH ÚČTŮ NELZE UDĚLAT)
+--------------------------------------------------------------------------------
+
+Všechna rozhraní, formuláře a API endpointy jsou již v kódu připravené. Aby ale
+systém volal na skutečná mobilní čísla přes GSM síť a používal placené modely,
+je potřeba doplnit vaše vlastní klíče:
+
+1) Vlastní AI API klíče (Gemini / OpenAI):
+   - Dokud nezadáte `GEMINI_API_KEY` nebo `OPENAI_API_KEY`, chatbot i hlasový bot
+     fungují v **Chytrém lokálním režimu** (odpovídají česky podle znalostní báze
+     a FAQ dané firmy a sbírají kontakty).
+   - Jakmile v sekci „API Klíče & Vercel“ (nebo přímo ve Vercel Dashboardu)
+     vložíte svůj `GEMINI_API_KEY`, okamžitě se aktivuje plnohodnotná umělá
+     inteligence Google Gemini 2.5 Flash!
+
+2) Skutečná telefonní čísla (GSM / VoIP) a hlasová ústředna (Vapi / Retell / Twilio):
+   - Hlasový hovor přes web (v prohlížeči a ve widgetu) funguje **okamžitě a zdarma**.
+   - Pro příjem a vytáčení reálných telefonních hovorů z mobilní sítě (např. na
+     čísle `+420 222 ...`) je nutné mít účet u **Vapi.ai**, **Retell AI** nebo
+     **Twilio**, zakoupit u nich telefonní číslo a v jejich administraci nastavit
+     Server/Webhook URL na vaši Vercel adresu:
+     `https://vase-domena.vercel.app/api/voice`
+   - Pro špičkový klonovaný český hlas vložte klíč `ELEVENLABS_API_KEY`.
+
+3) Trvalá cloudová databáze na Vercelu (Vercel KV / Upstash Redis):
+   - Na Vercelu mají běžné Serverless funkce dočasný souborový systém (`/tmp`).
+   - Proto jsme udělali dvojitou pojistku: všechna vaše data se trvale ukládají
+     ve vašem prohlížeči (`localStorage`) + můžete si je na 1 klik stáhnout do
+     souboru `.JSON`.
+   - Pokud chcete, aby se změny v databázi firem synchronizovaly v cloudu mezi
+     všemi počítači a weby klientů bez nutnosti exportu, klikněte ve Vercel
+     Dashboardu na záložku **Storage -> Connect Database -> Upstash Redis (KV)**.
+     Vercel automaticky nastaví proměnné `KV_REST_API_URL` a `KV_REST_API_TOKEN`
+     a náš kód v `api/_store.js` začne okamžitě ukládat vše do cloudu!
+
+--------------------------------------------------------------------------------
+3. PŘEHLED VŠECH NOVÝCH A UPRAVENÝCH SOUBORŮ
+--------------------------------------------------------------------------------
+- `admin.html`                   – Nová administrátorská aplikace
+- `admin.css`                    – Kompletní stylování administrace
+- `admin.js`                     – Veškerá logika adminu, simulátorů a databáze
+- `vercel.json`                  – Konfigurace routování a CORS hlaviček pro Vercel
+- `api/_store.js`                – Datové úložiště + výchozí databáze firem
+- `api/auth.js`                  – Přihlašování admina a kontrola Vercel ENV
+- `api/data.js`                  – Ukládání/načítání dat a konfigurace klientských widgetů
+- `api/chat.js`                  – Serverless AI Chatbot + detekce leadů
+- `api/voice.js`                 – Serverless Hlasový Bot + ElevenLabs TTS + Vapi
+- `api/trendy.js`                – Serverless endpoint pro AI trendy
+- `scripts-agent.js`             – Vylepšený Chat + Voice widget (podporuje multi-tenant embed)
+- `style-agent.css`              – Dynamicky stylovatelný CSS soubor widgetu
+- `index.html` & `scripts.js`    – Propojení hlavního webu s novým widgetem a `/api`
+- `VYSLEDKY_A_DOKUMENTACE.txt`   – Tento přehledový dokument
+================================================================================
+

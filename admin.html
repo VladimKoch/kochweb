@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProFirmio | Admin Centrum – AI Chatbot, Voice Bot & Databáze Firem</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="style-agent.css" />
+</head>
+
+<body>
+
+  <!-- ── AUTH LOGIN OVERLAY ──────────────────────────────────────── -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-logo">Pro<span>Firmio</span></div>
+      <div class="auth-badge">Admin Centrum · AI Hub</div>
+      <p>Přihlaste se do administrace pro správu Chatbota, Hlasového Bota, grafiky widgetu a klientských firem.</p>
+      <div class="auth-error" id="authError">Nesprávné heslo. Zkuste to prosím znovu.</div>
+      <form id="authForm">
+        <input type="password" class="auth-input" id="authPassword" placeholder="Zadejte administrátorské heslo..."
+          value="profirmio2026" required />
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:12px;">
+          Vstoupit do administrace →
+        </button>
+      </form>
+      <div class="auth-hint">
+        Výchozí heslo: <strong>profirmio2026</strong> (na Vercelu lze změnit proměnnou <code>ADMIN_PASSWORD</code>)
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN ADMIN LAYOUT ───────────────────────────────────────── -->
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="sidebar-logo">Pro<span>Firmio</span></a>
+        <span class="sidebar-tag">ADMIN</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="tab-dashboard">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Přehled & Statistiky
+        </button>
+
+        <button class="nav-item" data-tab="tab-companies">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 21h18" />
+            <path d="M5 21V7l8-4v18" />
+            <path d="M19 21V11l-6-4" />
+            <path d="M9 9v.01" />
+            <path d="M9 12v.01" />
+            <path d="M9 15v.01" />
+            <path d="M9 18v.01" />
+          </svg>
+          Databáze firem
+          <span class="nav-badge" id="navCompaniesCount">4</span>
+        </button>
+
+        <button class="nav-item" data-tab="tab-chatbot">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Ovládání Chatbota
+        </button>
+
+        <button class="nav-item" data-tab="tab-voicebot">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" y1="19" x2="12" y2="23" />
+            <line x1="8" y1="23" x2="16" y2="23" />
+          </svg>
+          Hlasový Bot (Volací)
+        </button>
+
+        <button class="nav-item" data-tab="tab-widget">
+          <svg viewBox="0 0 24 24">
+            <circle cx="13.5" cy="6.5" r=".5" />
+            <circle cx="17.5" cy="10.5" r=".5" />
+            <circle cx="8.5" cy="7.5" r=".5" />
+            <circle cx="6.5" cy="12.5" r=".5" />
+            <path
+              d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+          </svg>
+          Grafika Widgetu
+        </button>
+
+        <button class="nav-item" data-tab="tab-logs">
+          <svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg>
+          Leady & Historie
+          <span class="nav-badge" id="navLeadsCount">3</span>
+        </button>
+
+        <button class="nav-item" data-tab="tab-settings">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          API Klíče & Vercel
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank" class="sidebar-link">
+          🌐 Otevřít hlavní web
+        </a>
+        <button type="button" class="sidebar-link" id="logoutBtn"
+          style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+          🔒 Odhlásit se
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="admin-main">
+
+      <!-- TOPBAR -->
+      <header class="admin-topbar">
+        <div class="topbar-title">
+          <h1 id="topbarHeading">Přehled & Statistiky</h1>
+          <p id="topbarSub">Centrální řízení AI Chatbota, Hlasového Agenta a klientských firem</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="sync-pill" id="syncStatusPill">
+            <span class="dot"></span>
+            <span id="syncStatusText">Vercel API & Local Sync Aktivní</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnAddCompanyQuick">
+            + Nová firma
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" id="btnSaveAll">
+            💾 Uložit vše
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="admin-content">
+
+        <!-- =========================================================
+           TAB 1: DASHBOARD / PŘEHLED
+      ========================================================== -->
+        <section class="tab-pane active" id="tab-dashboard">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span>Spravované firmy (Klienti)</span>
+                <div class="kpi-icon">🏢</div>
+              </div>
+              <div class="kpi-value" id="kpiCompanies">4</div>
+              <div class="kpi-sub" id="kpiCompaniesSub">Aktivní Chat & Voice agenti</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span>Měsíční příjem z agentů (MRR)</span>
+                <div class="kpi-icon">💰</div>
+              </div>
+              <div class="kpi-value" id="kpiMrr">22 900 Kč</div>
+              <div class="kpi-sub">Pravidelná měsíční fakturace</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span>Odbavené Chaty / Hovory</span>
+                <div class="kpi-icon">🤖</div>
+              </div>
+              <div class="kpi-value" id="kpiInteractions">1 142</div>
+              <div class="kpi-sub" id="kpiInteractionsSub">713 chatů · 429 hovorů</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span>Zachycené Leady & Rezervace</span>
+                <div class="kpi-icon">🎯</div>
+              </div>
+              <div class="kpi-value" id="kpiLeads">3</div>
+              <div class="kpi-sub">E-maily, telefony a domluvené schůzky</div>
+            </div>
+          </div>
+
+          <div class="panel-grid">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Rychlé ovládání systému</h2>
+                  <p>Okamžité zapnutí/vypnutí modulů na vašem webu a přehled stavu</p>
+                </div>
+              </div>
+
+              <div class="switch-row">
+                <div class="switch-info">
+                  <strong>Zobrazovat Chat & Voice Widget na hlavním webu</strong>
+                  <span>Plovoucí bublina v rohu stránky <code>index.html</code></span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="dashToggleWidget" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="switch-row">
+                <div class="switch-info">
+                  <strong>AI Chatbot (Textový asistent 24/7)</strong>
+                  <span>Odpovídá návštěvníkům a sbírá e-maily/telefony</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="dashToggleChatbot" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="switch-row">
+                <div class="switch-info">
+                  <strong>AI Hlasový Bot (Volací agent & Hlasový režim ve widgetu)</strong>
+                  <span>Umožňuje hlasový hovor přímo na webu a přes telefonní ústřednu</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="dashToggleVoicebot" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;">
+                <button type="button" class="btn btn-primary" onclick="switchAdminTab('tab-companies')">
+                  🏢 Spravovat databázi firem
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="switchAdminTab('tab-widget')">
+                  🎨 Upravit barvy a vzhled widgetu
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="switchAdminTab('tab-voicebot')">
+                  📞 Otestovat hlasového bota
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Poslední zachycené leady a hovory</h3>
+                  <p>Nejnovější události napříč vašimi klientskými firmami</p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="switchAdminTab('tab-logs')">Zobrazit
+                  vše</button>
+              </div>
+              <div id="dashRecentActivity" style="display:flex;flex-direction:column;gap:10px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+           TAB 2: DATABÁZE FIREM (KLIENTI)
+      ========================================================== -->
+        <section class="tab-pane" id="tab-companies">
+          <div class="card" style="margin-bottom:20px;">
+            <div class="filter-bar" style="margin-bottom:0;">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="companySearchInput"
+                  placeholder="Hledat firmu podle názvu, IČO, domény, oboru nebo telefonu..." />
+              </div>
+              <div class="filter-pills" id="companyFilterPills">
+                <button type="button" class="filter-pill active" data-filter="all">Všechny</button>
+                <button type="button" class="filter-pill" data-filter="active">Aktivní</button>
+                <button type="button" class="filter-pill" data-filter="trial">V testování</button>
+                <button type="button" class="filter-pill" data-filter="voice">Volací Agent</button>
+                <button type="button" class="filter-pill" data-filter="chat">Chat Agent</button>
+              </div>
+              <button type="button" class="btn btn-primary" id="btnAddNewCompany">
+                + Přidat novou firmu
+              </button>
+            </div>
+          </div>
+
+          <div class="companies-grid" id="companiesGrid"></div>
+        </section>
+
+        <!-- =========================================================
+           TAB 3: OVLÁDÁNÍ CHATBOTA
+      ========================================================== -->
+        <section class="tab-pane" id="tab-chatbot">
+          <div class="panel-grid">
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h2>Konfigurace AI Chatbota</h2>
+                    <p>Upravte globální chování chatbota nebo přepněte na konkrétní klientskou firmu</p>
+                  </div>
+                  <select id="chatbotProfileSelect" class="form-select"
+                    style="width:auto;min-width:230px;font-weight:600;"></select>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">AI Poskytovatel</label>
+                    <select id="cbProvider" class="form-select">
+                      <option value="gemini">Google Gemini (Doporučeno – rychlé & česky)</option>
+                      <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+                      <option value="webhook">Vlastní Webhook (Make.com / n8n)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Model AI</label>
+                    <select id="cbModel" class="form-select">
+                      <option value="gemini-2.5-flash">gemini-2.5-flash (Nejrychlejší)</option>
+                      <option value="gemini-2.5-pro">gemini-2.5-pro (Komplexní uvažování)</option>
+                      <option value="gpt-4o-mini">gpt-4o-mini</option>
+                      <option value="gpt-4o">gpt-4o</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Kreativita (Temperature) <span id="cbTempVal">0.6</span></label>
+                    <input type="range" id="cbTemperature" min="0" max="1" step="0.1" value="0.6" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Max. délka odpovědi (Tokeny)</label>
+                    <input type="number" id="cbMaxTokens" class="form-input" value="500" min="100" max="2000" />
+                  </div>
+
+                  <div class="form-group full">
+                    <div class="form-label">
+                      <span>System Prompt (Instrukce a role pro AI Chatbota)</span>
+                      <div style="display:flex;gap:6px;">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                          onclick="applyPromptTemplate('b2b')">Šablona: B2B Prodej</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                          onclick="applyPromptTemplate('clinic')">Šablona: Ordinace/Služby</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                          onclick="applyPromptTemplate('eshop')">Šablona: E-shop Podpora</button>
+                      </div>
+                    </div>
+                    <textarea id="cbSystemPrompt" class="form-textarea" style="min-height:150px;"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Webhook URL pro zachycené leady (Make / n8n / CRM)</label>
+                    <input type="url" id="cbWebhookUrl" class="form-input"
+                      placeholder="https://hook.eu2.make.com/..." />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Odkaz na rezervační kalendář</label>
+                    <input type="url" id="cbBookingUrl" class="form-input" placeholder="https://..." />
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Záložní odpověď (Fallback)</label>
+                    <input type="text" id="cbFallbackReply" class="form-input" />
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+                  <button type="button" class="btn btn-primary" id="btnSaveChatbot">💾 Uložit nastavení
+                    Chatbota</button>
+                </div>
+              </div>
+
+              <!-- Knowledge Base & FAQ -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>Znalostní báze & Časté dotazy (FAQ)</h3>
+                    <p>Otázky a odpovědi, ze kterých chatbot automaticky čerpá fakta a ceníky</p>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnAddKbItem">+ Přidat otázku/fakt</button>
+                </div>
+                <div id="kbListContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
+              </div>
+            </div>
+
+            <!-- LIVE CHAT SIMULATOR -->
+            <div>
+              <div class="simulator-box">
+                <div class="sim-header">
+                  <div>
+                    <strong style="font-size:0.95rem;display:block;">💬 Živý Simulátor Chatbota</strong>
+                    <span style="font-size:0.75rem;color:#94a3b8;" id="simActiveCompanyLabel">Profil: ProFirmio
+                      (Hlavní)</span>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnClearChatSim"
+                    style="background:rgba(255,255,255,0.1);color:#fff;border:none;">
+                    Vyčistit chat
+                  </button>
+                </div>
+
+                <div class="sim-messages" id="simChatMessages">
+                  <div class="sim-msg bot">Dobrý den! Vyzkoušejte si mě nanečisto. Zeptejte se na služby, ceny nebo mi
+                    napište testovací e-mail a telefon.</div>
+                </div>
+
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+                  <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.08);color:#cbd5e1;"
+                    onclick="sendSimQuick('Kolik stojí vaše služby?')">💰 Kolik to stojí?</button>
+                  <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.08);color:#cbd5e1;"
+                    onclick="sendSimQuick('Jaké služby nabízíte?')">💼 Co nabízíte?</button>
+                  <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.08);color:#cbd5e1;"
+                    onclick="sendSimQuick('Mám zájem o schůzku, můj email je jan.novak@firma.cz a tel 777 888 999')">🎯
+                    Test zachycení leadu</button>
+                </div>
+
+                <div class="sim-input-row">
+                  <input type="text" id="simChatInput" placeholder="Napište testovací zprávu..." autocomplete="off" />
+                  <button type="button" class="btn btn-primary" id="btnSendSimChat">Odeslat</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+           TAB 4: OVLÁDÁNÍ HLASOVÉHO BOTA (VOICE AGENT)
+      ========================================================== -->
+        <section class="tab-pane" id="tab-voicebot">
+          <div class="panel-grid">
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h2>Konfigurace Hlasového Agenta (Voice Bot)</h2>
+                    <p>Nastavení hlasu, telefonního čísla, přepojování a scénáře hovoru</p>
+                  </div>
+                  <select id="voiceProfileSelect" class="form-select"
+                    style="width:auto;min-width:230px;font-weight:600;"></select>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Hlasová platforma / Engine</label>
+                    <select id="vbProvider" class="form-select">
+                      <option value="elevenlabs">ElevenLabs Conversational AI + TTS</option>
+                      <option value="vapi">Vapi.ai (Telefonní ústředna + SIP)</option>
+                      <option value="retell">Retell AI (Nízká latence hovorů)</option>
+                      <option value="openai">OpenAI Realtime Voice API</option>
+                      <option value="browser">Web Speech CZ (Vestavěný hlas prohlížeče)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Jméno / Profil hlasu</label>
+                    <input type="text" id="vbVoiceName" class="form-input"
+                      placeholder="Viktorie (Český přirozený hlas)" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Voice ID (ElevenLabs / Vapi ID)</label>
+                    <input type="text" id="vbVoiceId" class="form-input" placeholder="EXAVITQu4vr4xnSDxMaL" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Rychlost řeči <span id="vbRateVal">1.02x</span></label>
+                    <input type="range" id="vbSpeechRate" min="0.8" max="1.3" step="0.02" value="1.02" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Přiřazené tel. číslo agenta</label>
+                    <input type="text" id="vbPhoneNumber" class="form-input" placeholder="+420 730 553 971" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Číslo pro přepojení na člověka (Transfer)</label>
+                    <input type="text" id="vbTransferNumber" class="form-input" placeholder="+420 730 553 971" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Pracovní doba volacího agenta</label>
+                    <input type="text" id="vbWorkingHours" class="form-input" placeholder="Nonstop 24/7" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Post-Call Webhook URL (Make / CRM)</label>
+                    <input type="url" id="vbWebhookUrl" class="form-input"
+                      placeholder="https://hook.eu2.make.com/..." />
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Úvodní pozdrav při zvednutí hovoru (První věta bota)</label>
+                    <textarea id="vbGreeting" class="form-textarea" style="min-height:75px;"></textarea>
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Scénář hovoru & System Prompt pro Hlasového Agenta</label>
+                    <textarea id="vbSystemPrompt" class="form-textarea" style="min-height:130px;"></textarea>
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Šablona automatické SMS po ukončení hovoru</label>
+                    <input type="text" id="vbSmsTemplate" class="form-input" />
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+                  <button type="button" class="btn btn-primary" id="btnSaveVoicebot">💾 Uložit nastavení Hlasového
+                    Bota</button>
+                </div>
+              </div>
+
+              <!-- Outbound Call Dispatcher -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>📲 Vytočit odchozí testovací hovor (Outbound Call)</h3>
+                    <p>Otestujte odchozí hovor agenta na telefonní číslo přes Vapi/Retell nebo uložte testovací hovor
+                    </p>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <input type="tel" id="outboundPhoneInput" class="form-input" style="flex:1;min-width:200px;"
+                    placeholder="+420 730 553 971" value="+420 730 553 971" />
+                  <button type="button" class="btn btn-primary" id="btnTriggerOutboundCall">
+                    📞 Vytočit odchozí hovor
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- INTERACTIVE PHONE CALL SIMULATOR -->
+            <div>
+              <div class="phone-sim" id="adminPhoneSim">
+                <div style="text-align:center;">
+                  <span
+                    style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:#38bdf8;font-weight:700;">Interaktivní
+                    Hlasový Tester</span>
+                  <h3 style="font-size:1.15rem;margin-top:4px;" id="phoneSimCompanyTitle">ProFirmio Hlasový Agent</h3>
+                  <p style="font-size:0.8rem;color:#94a3b8;margin-top:2px;" id="phoneSimStatusText">Připraveno k hovoru
+                    · Mikrofon + Reproduktor</p>
+                  <div style="font-family:monospace;font-size:1.1rem;color:#22c55e;margin-top:6px;" id="phoneSimTimer">
+                    00:00</div>
+                </div>
+
+                <div class="phone-wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="phone-transcript-box" id="phoneSimTranscript">
+                  <div style="color:#94a3b8;">Klikněte na <strong>„Zahájit hlasový hovor“</strong>. Bot vás česky
+                    pozdraví a můžete na něj rovnou mluvit přes mikrofon (nebo mu poslat větu textově níže).</div>
+                </div>
+
+                <div style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+                  <div style="display:flex;gap:8px;justify-content:center;">
+                    <button type="button" class="btn btn-success" id="btnAdminStartCall"
+                      style="border-radius:99px;padding:12px 24px;">
+                      📞 Zahájit hlasový hovor
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnAdminMicToggle"
+                      style="border-radius:99px;display:none;">
+                      🎙️ Mluvit (Mikrofon)
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnAdminSpeakGreeting"
+                      title="Přehrát pouze úvodní pozdrav">
+                      🔊 Přehrát pozdrav
+                    </button>
+                  </div>
+
+                  <div class="sim-input-row" style="margin-top:4px;">
+                    <input type="text" id="phoneSimTextInput"
+                      placeholder="Nebo napište, co volající do telefonu říká..." />
+                    <button type="button" class="btn btn-primary btn-sm" id="btnPhoneSimSendText">Říct botovi</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+           TAB 5: GRAFIKA & VZHLED WIDGETU (VISUAL STUDIO)
+      ========================================================== -->
+        <section class="tab-pane" id="tab-widget">
+          <div class="panel-grid">
+            <div>
+              <!-- Presets -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h2>Barevné motivy na 1 klik (Themes)</h2>
+                    <p>Vyberte hotový vzhled nebo si níže upravte každou barvu ručně</p>
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('profirmio')">💎
+                    ProFirmio Azurová</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('royal')">🔵
+                    Královská Modrá</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('emerald')">🟢
+                    Smaragdová Klinika</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('violet')">🟣 Fialová
+                    AI</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('dark')">🌑 Dark
+                    Mode</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="applyWidgetTheme('gold')">✨ Zlatá
+                    Luxury</button>
+                </div>
+              </div>
+
+              <!-- Colors & Dimensions -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>Barvy, Rozměry & Pozice Widgetu</h3>
+                    <p>Každá změna se okamžitě propíše do živého widgetu vpravo dole</p>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Primární barva (Tlačítka & Bublina)</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgPrimaryColor" value="#179ccb" />
+                      <input type="text" id="wgPrimaryColorHex" class="form-input" value="#179ccb" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Sekundární barva (Gradient)</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgSecondaryColor" value="#0076a3" />
+                      <input type="text" id="wgSecondaryColorHex" class="form-input" value="#0076a3" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Pozadí chatovacího okna</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgBgColor" value="#ffffff" />
+                      <input type="text" id="wgBgColorHex" class="form-input" value="#ffffff" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Pozadí hlavičky</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgHeaderBgColor" value="#fafafa" />
+                      <input type="text" id="wgHeaderBgColorHex" class="form-input" value="#fafafa" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Bublina bota (Pozadí)</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgBotBubbleColor" value="#f1f5f9" />
+                      <input type="text" id="wgBotBubbleColorHex" class="form-input" value="#f1f5f9" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Bublina návštěvníka (Pozadí)</label>
+                    <div class="color-picker-wrap">
+                      <input type="color" id="wgUserBubbleColor" value="#179ccb" />
+                      <input type="text" id="wgUserBubbleColorHex" class="form-input" value="#179ccb" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Pozice na obrazovce</label>
+                    <select id="wgPosition" class="form-select">
+                      <option value="right">Vpravo dole (Doporučeno)</option>
+                      <option value="left">Vlevo dole</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Ikona Avatara v hlavičce</label>
+                    <select id="wgAvatarType" class="form-select">
+                      <option value="cpu">AI Čip (ProFirmio)</option>
+                      <option value="bot">Robot / Asistent</option>
+                      <option value="bolt">Blesk (Rychlá akce)</option>
+                      <option value="headset">Sluchátka s mikrofonem</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Zaoblení rohů okna <span id="wgRadiusVal">20px</span></label>
+                    <input type="range" id="wgBorderRadius" min="4" max="32" value="20" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Velikost plovoucí bubliny <span id="wgBtnSizeVal">56px</span></label>
+                    <input type="range" id="wgButtonSize" min="44" max="72" value="56" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Šířka okna (px)</label>
+                    <input type="number" id="wgWidth" class="form-input" value="350" min="290" max="480" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Výška okna (px)</label>
+                    <input type="number" id="wgHeight" class="form-input" value="500" min="380" max="700" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Texts & Quick Buttons -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>Texty, Rychlé volby & Animace</h3>
+                    <p>Upravte nadpisy, uvítací text a tlačítka rychlých odpovědí</p>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Titulek v hlavičce</label>
+                    <input type="text" id="wgHeaderTitle" class="form-input" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Podtitulek (Status)</label>
+                    <input type="text" id="wgHeaderSubtitle" class="form-input" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Uvítací nadpis</label>
+                    <input type="text" id="wgWelcomeTitle" class="form-input" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Placeholder v poli zprávy</label>
+                    <input type="text" id="wgInputPlaceholder" class="form-input" />
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Uvítací popis pod nadpisem</label>
+                    <textarea id="wgWelcomeText" class="form-textarea" style="min-height:70px;"></textarea>
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Rychlá tlačítka na úvodní obrazovce (každé tlačítko na nový řádek)</label>
+                    <textarea id="wgQuickButtons" class="form-textarea" style="min-height:85px;"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Text v patičce widgetu</label>
+                    <input type="text" id="wgFooterText" class="form-input" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Vlastní URL obrázku avatara (nepovinné)</label>
+                    <input type="url" id="wgCustomAvatarUrl" class="form-input" placeholder="https://.../logo.png" />
+                  </div>
+                </div>
+
+                <div class="switch-row">
+                  <div class="switch-info">
+                    <strong>Povolit záložku „Hovor“ (Hlasový bot přímo ve widgetu)</strong>
+                    <span>Návštěvník si může přepnout mezi psaním a hlasovým hovorem</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="wgEnableVoiceTab" checked />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="switch-row">
+                  <div class="switch-info">
+                    <strong>Wiggle animace plovoucí bubliny (každých 8 sekund)</strong>
+                    <span>Jemné zatřesení bubliny pro upoutání pozornosti</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="wgEnableWiggle" checked />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="switch-row">
+                  <div class="switch-info">
+                    <strong>Zvukový efekt (Pop Sound) při příchozí zprávě</strong>
+                    <span>Přehraje jemný tón při odpovědi bota</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="wgEnableSound" checked />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px;">
+                  <button type="button" class="btn btn-primary" id="btnSaveWidget">💾 Uložit grafiku widgetu</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- EMBED CODE & LIVE PREVIEW CONTROLS -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>👀 Živý náhled & Embed kód pro weby</h3>
+                    <p>Widget vidíte přímo v pravém dolním rohu této stránky</p>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm"
+                    onclick="window.ProFirmioWidget && window.ProFirmioWidget.open()">
+                    Otevřít živý widget ↘
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Generovat Embed kód pro firmu:</label>
+                  <select id="embedCompanySelect" class="form-select"></select>
+                </div>
+
+                <p style="font-size:0.8rem;color:var(--adm-text-sec);margin-bottom:8px;">
+                  Vložte tento jednořádkový kód těsně před <code>&lt;/body&gt;</code> na web klienta (automaticky načte
+                  barvy, texty, chatbota i hlasového bota dané firmy):
+                </p>
+                <div class="code-box" id="embedCodeBox"></div>
+
+                <div style="display:flex;gap:10px;margin-top:12px;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCopyEmbed">📋 Kopírovat Embed
+                    kód</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+           TAB 6: LEADY & HISTORIE HOVORŮ / CHATŮ
+      ========================================================== -->
+        <section class="tab-pane" id="tab-logs">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Zachycené Leady & Kontakty z Chatbota a Hlasového Bota</h2>
+                <p>Poptávky, e-maily, telefonní čísla a rezervace získané napříč všemi firmami</p>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnExportLeadsCsv">📥 Exportovat CSV</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnAddLeadManual">+ Přidat záznam</button>
+              </div>
+            </div>
+
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Datum</th>
+                    <th>Firma (Klient)</th>
+                    <th>Zdroj</th>
+                    <th>Kontakt / Jméno</th>
+                    <th>Telefon</th>
+                    <th>Shrnutí poptávky</th>
+                    <th>Stav</th>
+                    <th>Akce</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Historie Hovorů & Chat Konverzací (Přepisy)</h3>
+                <p>Detailní záznamy komunikace hlasového agenta a chatbota</p>
+              </div>
+            </div>
+            <div id="logsListContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+           TAB 7: API KLÍČE, VERCEL & ZÁLOHA DATABÁZE
+      ========================================================== -->
+        <section class="tab-pane" id="tab-settings">
+          <div class="panel-grid">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Propojení s AI & Telefonními API</h2>
+                  <p>Klíče můžete zadat přímo zde pro okamžité testování, nebo je uložit do Vercel Environment Variables
+                  </p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Google Gemini API Key (pro Chatbota i Hlasového bota)
+                  <span id="envBadgeGemini"></span>
+                </label>
+                <input type="password" id="keyGemini" class="form-input" placeholder="AIzaSy..." />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  OpenAI API Key (pro GPT-4o)
+                  <span id="envBadgeOpenai"></span>
+                </label>
+                <input type="password" id="keyOpenai" class="form-input" placeholder="sk-..." />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  ElevenLabs API Key (pro špičkový český hlas TTS)
+                  <span id="envBadgeElevenlabs"></span>
+                </label>
+                <input type="password" id="keyElevenlabs" class="form-input" placeholder="xi-api-key..." />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Vapi.ai / Retell API Key (pro reálnou telefonní ústřednu a SIM čísla)
+                  <span id="envBadgeVapi"></span>
+                </label>
+                <input type="password" id="keyVapi" class="form-input" placeholder="vapi-..." />
+              </div>
+
+              <button type="button" class="btn btn-primary" id="btnSaveApiKeys">💾 Uložit API klíče</button>
+            </div>
+
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3>⚡ Vercel Serverless & Databázová Záloha</h3>
+                    <p>Exportujte nebo naimportujte kompletní databázi firem a nastavení</p>
+                  </div>
+                </div>
+
+                <p style="font-size:0.83rem;color:var(--adm-text-sec);line-height:1.55;margin-bottom:16px;">
+                  Tento web používá <strong>Vercel Serverless Functions</strong> (složka <code>/api</code>). Veškeré
+                  změny se ukládají do prohlížeče (<code>localStorage</code>), do <code>/api/data</code> a pokud ve
+                  Vercelu připojíte <strong>Vercel KV (Upstash Redis)</strong>, data se synchronizují v cloudu napříč
+                  všemi zařízeními.
+                </p>
+
+                <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;">
+                  <button type="button" class="btn btn-primary" id="btnExportJson">📦 Stáhnout zálohu databáze
+                    (.JSON)</button>
+                  <label class="btn btn-secondary" style="cursor:pointer;">
+                    📂 Nahrát zálohu ze souboru (.JSON)
+                    <input type="file" id="inputImportJson" accept=".json" style="display:none;" />
+                  </label>
+                  <button type="button" class="btn btn-danger" id="btnResetDefaults">🔄 Obnovit výchozí data</button>
+                </div>
+
+                <div class="code-box" style="font-size:0.74rem;">
+                  # Doporučené proměnné prostředí ve Vercel Dashboardu (Settings → Environment Variables):
+                  ADMIN_PASSWORD=vase_tajne_heslo
+                  GEMINI_API_KEY=AIzaSy...
+                  OPENAI_API_KEY=sk-...
+                  ELEVENLABS_API_KEY=...
+                  VAPI_API_KEY=...
+                  KV_REST_API_URL=... (volitelné pro cloudovou databázi Vercel KV)
+                  KV_REST_API_TOKEN=...
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- =========================================================
+     MODAL: DETAILNÍ EDITOR FIRMY (KLIENTA)
+========================================================== -->
+  <div class="modal-backdrop" id="companyModal">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalCompanyTitle" style="font-family:'Space Grotesk',sans-serif;font-size:1.15rem;">Upravit firmu
+          </h3>
+          <p style="font-size:0.78rem;color:var(--adm-text-sec);">Nastavení klienta, jeho Chat Agenta a Volacího
+            Hlasového Agenta</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseCompanyModal">✕ Zavřít</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button type="button" class="modal-tab-btn active" data-mtab="mtab-info">1. Firemní údaje & Tarif</button>
+        <button type="button" class="modal-tab-btn" data-mtab="mtab-chat">2. Chat Agent firmy</button>
+        <button type="button" class="modal-tab-btn" data-mtab="mtab-voice">3. Volací Agent (Voice Bot)</button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="mcId" />
+
+        <!-- Modal Tab 1: Basic Info -->
+        <div class="mtab-pane" id="mtab-info">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Název firmy *</label>
+              <input type="text" id="mcName" class="form-input" placeholder="Např. AutoServis Novák s.r.o." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unikátní Client ID (pro Embed kód)</label>
+              <input type="text" id="mcClientId" class="form-input" placeholder="autoservis-novak-01" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">IČO</label>
+              <input type="text" id="mcIco" class="form-input" placeholder="12345678" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Obor podnikání</label>
+              <input type="text" id="mcIndustry" class="form-input" placeholder="Zdravotnictví / E-shop / Reality..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kontaktní osoba</label>
+              <input type="text" id="mcContactPerson" class="form-input" placeholder="Jan Novák" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">E-mail klienta</label>
+              <input type="email" id="mcEmail" class="form-input" placeholder="info@firma.cz" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Telefon klienta</label>
+              <input type="text" id="mcPhone" class="form-input" placeholder="+420 777 000 000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Webová doména klienta</label>
+              <input type="text" id="mcDomain" class="form-input" placeholder="www.firma.cz" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Stav spolupráce</label>
+              <select id="mcStatus" class="form-select">
+                <option value="active">Aktivní (Produkce)</option>
+                <option value="trial">V testování (Trial)</option>
+                <option value="paused">Pozastaveno</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Měsíční paušál (Kč / měsíc)</label>
+              <input type="number" id="mcMonthlyFee" class="form-input" value="6500" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Interní poznámky k firmě</label>
+              <textarea id="mcNotes" class="form-textarea" style="min-height:70px;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Tab 2: Chat Agent -->
+        <div class="mtab-pane" id="mtab-chat" style="display:none;">
+          <div class="switch-row">
+            <div class="switch-info">
+              <strong>Chat Agent pro tuto firmu je AKTIVNÍ</strong>
+              <span>Povolí webového chatbota na doméně klienta</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="mcChatEnabled" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Jméno Chatbota v hlavičce</label>
+              <input type="text" id="mcChatBotName" class="form-input" placeholder="AI Asistent firmy..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primární barva widgetu firmy</label>
+              <div class="color-picker-wrap">
+                <input type="color" id="mcChatColor" value="#179ccb" />
+                <input type="text" id="mcChatColorHex" class="form-input" value="#179ccb" />
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Uvítací zpráva chatbota</label>
+              <input type="text" id="mcChatWelcome" class="form-input" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">System Prompt (Instrukce chování Chat Agenta pro tuto firmu)</label>
+              <textarea id="mcChatPrompt" class="form-textarea" style="min-height:95px;"></textarea>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Znalostní báze firmy (Ceník, otevírací doba, adresa, služby)</label>
+              <textarea id="mcChatKb" class="form-textarea" style="min-height:95px;"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rychlá tlačítka (oddělená čárkou)</label>
+              <input type="text" id="mcChatQuickBtns" class="form-input"
+                placeholder="Ceník, Objednat termín, Kontakt" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Webhook URL pro leady této firmy</label>
+              <input type="url" id="mcChatWebhook" class="form-input" placeholder="https://hook.eu2.make.com/..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Tab 3: Voice Agent -->
+        <div class="mtab-pane" id="mtab-voice" style="display:none;">
+          <div class="switch-row">
+            <div class="switch-info">
+              <strong>Volací Hlasový Agent pro tuto firmu je AKTIVNÍ</strong>
+              <span>Zvedá hovory a umožňuje hlasové vytáčení pro tuto firmu</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="mcVoiceEnabled" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Přiřazené telefonní číslo agenta</label>
+              <input type="text" id="mcVoicePhone" class="form-input" placeholder="+420 222 510 900" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Číslo pro přepojení na živou obsluhu</label>
+              <input type="text" id="mcVoiceTransfer" class="form-input" placeholder="+420 777 123 456" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Poskytovatel hlasu</label>
+              <select id="mcVoiceProvider" class="form-select">
+                <option value="elevenlabs">ElevenLabs</option>
+                <option value="vapi">Vapi.ai</option>
+                <option value="retell">Retell AI</option>
+                <option value="openai">OpenAI Realtime</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jméno hlasu / Voice ID</label>
+              <input type="text" id="mcVoiceName" class="form-input" placeholder="Klára (Empatický CZ)" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Úvodní pozdrav při zvednutí telefonu</label>
+              <textarea id="mcVoiceGreeting" class="form-textarea" style="min-height:70px;"></textarea>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Scénář hovoru & System Prompt pro Volacího Agenta firmy</label>
+              <textarea id="mcVoicePrompt" class="form-textarea" style="min-height:95px;"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Provozní doba hlasového agenta</label>
+              <input type="text" id="mcVoiceHours" class="form-input" placeholder="24/7 Nonstop" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" id="btnCancelCompanyModal">Zrušit</button>
+        <button type="button" class="btn btn-primary" id="btnSaveCompanyModal">💾 Uložit firmu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="adm-toast" id="admToast">Změny byly úspěšně uloženy!</div>
+
+  <script src="scripts-agent.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>

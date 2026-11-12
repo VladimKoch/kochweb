@@ -447,8 +447,8 @@ document.querySelectorAll('.service-card, .step-card, .testimonial-card').forEac
   draw();
 })();
 
- // URL Python serveru (při přesunu na Render upravíš tuto adresu)
-    const BACKEND_URL = "http://127.0.0.1:5000";
+ // URL API pro Vercel (relativní /api/trendy funguje automaticky na Vercelu i lokálně)
+    const BACKEND_URL = "/api";
 
     async function nactiTrendy() {
       const trendyList = document.getElementById('trendy-list');
